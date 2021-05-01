@@ -1,0 +1,5 @@
+{
+    "files.associations": {
+        "*.s": "TASM-6502"
+    }
+}

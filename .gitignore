@@ -1,0 +1,5 @@
+datasheets
+*.bin
+*.o
+*.out
+src/build/*
