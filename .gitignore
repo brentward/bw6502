@@ -3,3 +3,4 @@ datasheets
 *.o
 *.out
 src/build/*
+bin_dump

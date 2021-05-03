@@ -1,5 +1,5 @@
-value = s0 ; 2 bytes
-mod10 = s1 ; 2 bytes
+value = r0 ; 2 bytes
+mod10 = r1 ; 2 bytes
   ; converts 16 bit value decimal as ascii
   ; input: s0
   ; output: decimal_string

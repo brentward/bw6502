@@ -1,11 +1,11 @@
 AS = vasm6502_oldstyle
-ASBIN	= -Fbin
-ASOPTS = -dotdir -c02
+ASBIN = -Fbin
+ASOPTS = -dotdir -wdc02
 
 all: clean build/main.bin
 
 clean:
 	rm -f build/main.bin
 
-build/main.bin: main.s
+build/main.bin: src/main.s
 	$(AS) $(ASBIN) $(ASOPTS) $< -o $@

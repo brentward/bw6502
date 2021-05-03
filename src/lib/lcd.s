@@ -1,8 +1,36 @@
+SET_DDRAM_ADDR       = %10000000
+
+SET_CGRAM_ADDR       = %01000000
+
+FUNCTION_SET         = %00100000
+FUNCTION_8_BIT       = %00010000
+FUNCTION_2_LINE      = %00001000
+FUNCTION_5x10_FONT   = %00000100
+
+CD_SHIFT             = %00010000
+CD_SHIFT_DISPLAY     = %00001000
+CD_SHIFT_RIGHT       = %00000100
+
+
+DISPLAY_CONTROL      = %00001000
+DISPLAY_ON           = %00000100
+DISPLAY_CURSOR_ON    = %00000010
+DISPLAY_CURSOR_BLINK = %00000001
+
+ENTRY_MODE_SET       = %00000100
+ENTRY_MODE_INCREMENT = %00000010
+ENTRY_MODE_SHIFT     = %00000001
+
+RETURN_HOME          = %00000010
+
+CLEAR_DISPLAY        = %00000001
+
+
 E  = %10000000
 RW = %01000000
 RS = %00100000
 
-string_ptr = s0
+string_ptr = r0
 
 lcd_init:
   pha
@@ -22,13 +50,13 @@ lcd_init:
   jsr wait_ms
   lda #%00000010 ; Sets to 4-bit mode
   jsr lcd_instruction.send_command
-  lda #%00101000 ; Sets to 4-bit mode; 2-line display; 5x8 font
+  lda #(FUNCTION_SET | FUNCTION_2_LINE) ; Sets to 4-bit mode; 2-line display; 5x8 font
   jsr lcd_instruction
-  lda #%00000110 ; Entry mode set; increment and shift cursor; no scroll 
+  lda #(ENTRY_MODE_SET | ENTRY_MODE_INCREMENT) ; Entry mode set; increment and shift cursor; no scroll 
   jsr lcd_instruction
-  lda #%00000001 ; Clear display
+  lda #CLEAR_DISPLAY ; Clear display
   jsr lcd_instruction
-  lda #%00001111 ; Display on; cursor on; blink on 
+  lda #(DISPLAY_CONTROL | DISPLAY_ON | DISPLAY_CURSOR_ON) ; Display on; cursor on; blink off 
   jsr lcd_instruction
   pla
   rts
@@ -91,11 +119,30 @@ lcd_wait:
 
 
 lcd_clear:
-  lda #%00000001 ; Clear
+  lda #CLEAR_DISPLAY ; Clear
+  jsr lcd_instruction
+
+lcd_home:
+  lda #RETURN_HOME
   jsr lcd_instruction
   rts
 
-print_char:
+lcd_cursor_left:
+  lda #CD_SHIFT
+  jsr lcd_instruction
+  rts
+
+lcd_cursor_right:
+  lda #(CD_SHIFT | CD_SHIFT_RIGHT)
+  jsr lcd_instruction
+  rts
+
+lcd_set_ddram_addr: ; Sets cursor position to value in A register
+  ora #SET_DDRAM_ADDR
+  jsr lcd_instruction
+  rts
+
+lcd_print_char:
   pha
   jsr lcd_wait
   lsr            ; shift high nibble to low 4 bits
@@ -125,27 +172,44 @@ print_char:
   rts
 
 
-print_message
+lcd_print_screen_buf
   ldx #0
 .loop:
-  lda message,x
+  lda screen_buf,x
   beq .return
-  jsr print_char
+  jsr lcd_print_char
   inx
   jmp .loop
 .return
   rts
 
 ; print null terminated string located at address contained in s0
-; input s0
-print
+; input r0
+lcd_print
   ldy #0
 .loop
   lda (string_ptr),y
   beq .return
-  jsr print_char
+  jsr lcd_print_char
   iny
   jmp loop
 .return
+  rts
+
+push_char_screen_buf:
+  pha
+  ldx #0
+
+.char_loop
+  lda screen_buf,x
+  beq .add_char
+  inx
+  jmp .char_loop
+
+.add_char
+  pla
+  sta screen_buf,x
+  inx
+  stz screen_buf,x
   rts
 
