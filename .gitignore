@@ -2,5 +2,5 @@ datasheets
 *.bin
 *.o
 *.out
-src/build/*
+build/*
 bin_dump
