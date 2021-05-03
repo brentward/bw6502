@@ -8,9 +8,9 @@
   .include lib/zeropage.s
 
 ; variables
-counter = $0204 ; 2 bytes
-message = $0206 ; 81 bytes 0x0206..0x0257
-decimal_string = $2057 ; 6 bytes 0x2057..0x205d
+kb_buffer = $0200 ; 256 bytes 0x0200-0x02ff
+screen_buf = $0300 ; 256 bytes 0x0300-0x03ff
+decimal_string = $0400 ; 6 bytes 0x0400-0x0405
 
 
 reset:
@@ -20,24 +20,31 @@ reset:
 
   jsr via_init
   jsr lcd_init
+  jsr kb_init
 
   cli
-  stz counter
-  stz counter + 1
-  stz ps2_ignore_next_code
 
 loop:
-  bra loop
+  sei
+  lda kb_rptr
+  cmp kb_wptr
+  cli
+  bne key_pressed
+  jmp loop
+
+key_pressed:
+  ldx kb_rptr
+  lda kb_buffer,x
+  jsr lcd_print_char
+  inc kb_rptr
+  jmp loop
+
 
 nmi:
   rti
 
 irq:
-  pha
-  lda VIA1_PORTA
-  jsr print_ps2_key
-  ; sta counter
-  pla
+  jsr kb_handle
   rti
 
   .org $fffa
