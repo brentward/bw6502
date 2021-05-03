@@ -61,3 +61,29 @@ via_init:
   stz VIA1_PORTB
   pla
   rts
+
+via_led_array_init:
+  pha
+  stz VIA2_DDRA
+  lda #%11111111 ; Set all pins on port B to output
+  sta VIA2_DDRB
+  lda VIA2_PORTA
+  sta VIA2_PORTB
+  pla
+  rts
+
+via_led_left:
+  lda VIA2_PORTB ; read port B
+  rol ; set carry bit
+  lda VIA2_PORTB ; read port B again
+  rol ; rotate left with carry bit set from previous rotate (effectivly skipping the carry bit)
+  sta VIA2_PORTB
+  rts
+
+via_led_right:
+  lda VIA2_PORTB
+  ror ; set carry bit
+  lda VIA2_PORTB ; read port B again
+  ror ; rotate right with carry bit set from previous rotate (effectivly skipping the carry bit)
+  sta VIA2_PORTB
+  rts
