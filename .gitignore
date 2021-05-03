@@ -4,3 +4,4 @@ datasheets
 *.out
 build/*
 bin_dump
+*.python-version
