@@ -1,19 +1,30 @@
 RELEASE   = %00000001
-SHIFT     = %00000010
-ALT       = %00000100
-CTRL      = %00001000
-META      = %00010000
+EXTENDED  = %00000010
 CAPS_LOCK = %10000000
+
+L_SHIFT     = %00000001
+R_SHIFT     = %00000010
+L_ALT       = %00000100
+R_ALT       = %00001000
+L_CTRL      = %00010000
+R_CTRL      = %00100000
+L_GUI       = %01000000
+R_GUI       = %10000000
 
 kb_init:
   stz kb_wptr
   stz kb_rptr
   stz kb_flags
+  stz kb_modifiers
   rts
 
 kb_handle:
   pha
   phx
+
+  lda kb_flags
+  and #EXTENDED
+  bne .read_byte_extended
 
   lda kb_flags
   and #RELEASE
@@ -24,25 +35,44 @@ kb_handle:
   sta kb_flags
   lda VIA1_PORTA
   cmp #$12
-  beq .shfit_up
+  beq .l_shfit_up
   cmp #$59
-  beq .shfit_up
+  beq .r_shfit_up
   jmp .return
 
-.shfit_up:
+.read_byte_extended
   lda kb_flags
-  eor #SHIFT
+  eor #EXTENDED
   sta kb_flags
+  and #RELEASE
+  beq .read_key_extended
+  lda kb_flags
+  eor #RELEASE
+  sta kb_flags
+  lda VIA1_PORTA
+  jmp .return
+
+.l_shfit_up:
+  lda kb_modifiers
+  eor #L_SHIFT
+  sta kb_modifiers
+  jmp .return
+.r_shfit_up:
+  lda kb_modifiers
+  eor #R_SHIFT
+  sta kb_modifiers
   jmp .return
 
 .read_key:
   lda VIA1_PORTA
   cmp #$f0
   beq .key_released
+  cmp #$e0
+  beq .extended
   cmp #$12
-  beq .shift_down
+  beq .l_shift_down
   cmp #$59
-  beq .shift_down
+  beq .r_shift_down
   cmp #$58
   beq .caps_lock_down
   cmp #$76
@@ -53,15 +83,43 @@ kb_handle:
   beq .enter_down
 
   tax
-  lda kb_flags
-  and #SHIFT
+  lda kb_modifiers
+  and #L_SHIFT
+  bne .shifted_key
+  lda kb_modifiers
+  and #R_SHIFT
   bne .shifted_key
   lda kb_flags
   and #CAPS_LOCK
-  bne .shifted_key
+  bne .caps_lock_key
 
   lda keymap,x
   jmp .push_key
+
+.read_key_extended:
+  lda VIA1_PORTA
+  cmp #$f0
+  beq .key_released
+  cmp #$6b
+  beq .left_down
+  cmp #$74
+  beq .right_down
+  jmp .return
+
+
+.caps_lock_key:
+  lda keymap,x
+  tax
+  clc
+  adc #($ff - "z")
+  adc #("z" - "a" + 1)
+  txa
+  bcs .char_is_a_to_z
+  jmp .push_key
+
+.char_is_a_to_z
+  sbc #$20
+  jmp .push_key 
 
 .shifted_key:
   lda keymap_shifted,x
@@ -72,10 +130,16 @@ kb_handle:
   inc kb_wptr
   jmp .return
 
-.shift_down:
-  lda kb_flags
-  ora #SHIFT
-  sta kb_flags
+.l_shift_down:
+  lda kb_modifiers
+  ora #L_SHIFT
+  sta kb_modifiers
+  jmp .return
+
+.r_shift_down:
+  lda kb_modifiers
+  ora #R_SHIFT
+  sta kb_modifiers
   jmp .return
 
 .caps_lock_down:
@@ -101,6 +165,20 @@ kb_handle:
   and #$40
   ; lda #$40
   jsr lcd_set_ddram_addr
+  jmp .return
+
+.left_down:
+  jsr lcd_screen_right
+  jmp .return
+
+.right_down:
+  jsr lcd_screen_left
+  jmp .return
+
+.extended:
+  lda kb_flags
+  ora #EXTENDED
+  sta kb_flags
   jmp .return
 
 .key_released:
