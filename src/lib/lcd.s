@@ -137,6 +137,16 @@ lcd_cursor_right:
   jsr lcd_instruction
   rts
 
+lcd_screen_left:
+  lda #(CD_SHIFT | CD_SHIFT_DISPLAY)
+  jsr lcd_instruction
+  rts
+
+lcd_screen_right:
+  lda #(CD_SHIFT | CD_SHIFT_DISPLAY | CD_SHIFT_RIGHT)
+  jsr lcd_instruction
+  rts
+
 lcd_set_ddram_addr: ; Sets cursor position to value in A register
   ora #SET_DDRAM_ADDR
   jsr lcd_instruction
