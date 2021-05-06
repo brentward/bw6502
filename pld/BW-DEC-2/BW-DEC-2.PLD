@@ -1,12 +1,12 @@
-Name     Memory Decoder ;
+Name     Memory Decoder with 16x general IO ;
 PartNo   BW-DEC-2 ;
 Date     5/6/2021 ;
 Revision 01 ;
 Designer Brent Bettis ;
 Company  Brentward Industries Ltd. ;
 Assembly None ;
-Location  ;
-Device   g22V10 ;
+Location Mill Creek, WA, USA ;
+Device   p22V10 ;
 
 /* *************** INPUT PINS *********************/
 PIN 1   = CLK                     ; /*                                 */ 

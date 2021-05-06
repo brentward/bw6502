@@ -1,11 +1,11 @@
-{COMPONENT C:\WINCUPL\WINCUPL\MEMORY DECODER.SYM
+{COMPONENT C:\WINCUPL\WINCUPL\BW-DEC-1\BW-DEC-1.SYM
 
  {ENVIRONMENT
   {PDIFvrev 3.00}
   {Program "CUPL(WM) Version 5.0a"}
   {DBtype "Schematic"}
   {DBvrev 1.01}
-  {DBtime "Thu May 06 12:15:30 2021 "}
+  {DBtime "Thu May 06 13:20:34 2021 "}
   {DBunit "MIL"}
   {DBgrid 10}
   {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
@@ -146,7 +146,7 @@
    {T "OE" 260 160}
    [Ly "DEVICE"]
    [Tj "CT"]
-   {T "G22V10" 200 -10}
+   {T "P22V10" 200 -10}
   }
 
   {ATR
@@ -157,7 +157,7 @@
    {EX
     [Ly "ATTR2"]
     [Ts 12][Tj "CT"][Tr 0][Tm "N"]
-    {At PLD C:\WINCUPL\WINCUPL\MEMORY DECODER 200 320}
+    {At PLD C:\WINCUPL\WINCUPL\BW-DEC-1\BW-DEC-1 200 320}
    }
   }
  }

@@ -1,17 +1,17 @@
 
 CUPL(WM)        5.0a  Serial# 60008009
-Device          g22v10  Library DLIB-h-40-1
-Created         Thu May 06 12:15:30 2021
-Name            Memory Decoder 
+Device          p22v10  Library DLIB-h-40-17
+Created         Thu May 06 13:20:34 2021
+Name            Memory Decoder with VIAx2, ACIA, and Vera
 Partno          BW-DEC-1 
 Revision        01 
 Date            5/6/2021 
 Designer        Brent Bettis 
 Company         Brentward Industries Ltd. 
 Assembly        None 
-Location        
+Location        Mill Creek, WA, USA 
 *QP24 
-*QF5892 
+*QF5828 
 *G0 
 *F0 
 *L00032 00000000000011111111111111111111
@@ -50,8 +50,6 @@ Location
 *L04384 10110101100110101111111110111011
 *L04416 10111011101110110110101010010000
 *L05792 00000000000000000101110111111111
-*L05824 01010100001001010111001011010100
-*L05856 01000100010101000011001011010011
-*L05888 0001
-*C642A
-*85EE
+*L05824 0101
+*C6182
+*8457
