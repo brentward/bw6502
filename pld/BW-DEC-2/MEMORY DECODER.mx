@@ -1,0 +1,49 @@
+Name     Memory Decoder ;
+PartNo   BW-DEC-2 ;
+Date     5/6/2021 ;
+Revision 01 ;
+Designer Brent Bettis ;
+Company  Brentward Industries Ltd. ;
+Assembly None ;
+Location  ;
+Device   g22V10 ;
+
+/* *************** INPUT PINS *********************/
+PIN 1   = CLK                     ; /*                                 */ 
+PIN 2   = RW                      ; /*                                 */ 
+PIN 3   = A15                     ; /*                                 */ 
+PIN 4   = A14                     ; /*                                 */ 
+PIN 5   = A13                     ; /*                                 */ 
+PIN 6   = A12                     ; /*                                 */ 
+PIN 7   = A11                     ; /*                                 */ 
+PIN 8   = A10                     ; /*                                 */ 
+PIN 9   = A9                      ; /*                                 */ 
+PIN 10  = A8                      ; /*                                 */ 
+PIN 11  = A7                      ; /*                                 */ 
+PIN 13  = A6                      ; /*                                 */ 
+
+/* *************** OUTPUT PINS *********************/
+PIN 23  = OE                      ; /*                                 */ 
+PIN 22  = WE                      ; /*                                 */ 
+PIN 21  = RAM_CS                  ; /*                                 */ 
+PIN 20  = ROM_CS                  ; /*                                 */ 
+PIN 19  = IO_LOW_CS               ; /*                                 */ 
+PIN 18  = IO_HIGH_CS              ; /*                                 */ 
+
+
+/* *************** LOCAL VARIABLES *****************/
+FIELD Address = [A15..A6];
+
+/* *************** LOGIC ***************************/
+
+RAM            = Address:[0000..7FFF];
+IO_LOW_SHADOW  = Address:[0200..0207F];
+IO_HIGH_SHADOW = Address:[0280..02FF];
+ROM            = Address:[8000..FFFF];
+
+!WE        = CLK & !RW;
+!OE        = CLK & RW;
+!RAM_CS    = RAM & !(IO_LOW_SHADOW # IO_HIGH_SHADOW);
+!ROM_CS    = ROM;
+IO_LOW_CS  = IO_LOW_SHADOW;
+IO_HIGH_CS = IO_HIGH_SHADOW  ;

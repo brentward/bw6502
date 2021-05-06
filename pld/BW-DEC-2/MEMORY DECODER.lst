@@ -1,0 +1,63 @@
+LISTING FOR LOGIC DESCRIPTION FILE: MEMORY DECODER.pld               Page 1
+
+CUPL(WM): Universal Compiler for Programmable Logic
+Version 5.0a Serial# 60008009
+Copyright (c) 1983, 1998 Logical Devices, Inc.
+Created Thu May 06 12:53:51 2021
+
+  1:Name     Memory Decoder ;
+  2:PartNo   BW-DEC-2 ;
+  3:Date     5/6/2021 ;
+  4:Revision 01 ;
+  5:Designer Brent Bettis ;
+  6:Company  Brentward Industries Ltd. ;
+  7:Assembly None ;
+  8:Location  ;
+  9:Device   g22V10 ;
+ 10:
+ 11:/* *************** INPUT PINS *********************/
+ 12:PIN 1   = CLK                     ; /*                                 */ 
+ 13:PIN 2   = RW                      ; /*                                 */ 
+ 14:PIN 3   = A15                     ; /*                                 */ 
+ 15:PIN 4   = A14                     ; /*                                 */ 
+ 16:PIN 5   = A13                     ; /*                                 */ 
+ 17:PIN 6   = A12                     ; /*                                 */ 
+ 18:PIN 7   = A11                     ; /*                                 */ 
+ 19:PIN 8   = A10                     ; /*                                 */ 
+ 20:PIN 9   = A9                      ; /*                                 */ 
+ 21:PIN 10  = A8                      ; /*                                 */ 
+ 22:PIN 11  = A7                      ; /*                                 */ 
+ 23:PIN 13  = A6                      ; /*                                 */ 
+ 24:
+ 25:/* *************** OUTPUT PINS *********************/
+ 26:PIN 23  = OE                      ; /*                                 */ 
+ 27:PIN 22  = WE                      ; /*                                 */ 
+ 28:PIN 21  = RAM_CS                  ; /*                                 */ 
+ 29:PIN 20  = ROM_CS                  ; /*                                 */ 
+ 30:PIN 19  = IO_LOW_CS               ; /*                                 */ 
+ 31:PIN 18  = IO_HIGH_CS              ; /*                                 */ 
+ 32:
+ 33:
+ 34:/* *************** LOCAL VARIABLES *****************/
+ 35:FIELD Address = [A15..A6];
+ 36:
+ 37:/* *************** LOGIC ***************************/
+ 38:
+ 39:RAM            = Address:[0000..7FFF];
+ 40:IO_LOW_SHADOW  = Address:[0200..0207F];
+ 41:IO_HIGH_SHADOW = Address:[0280..02FF];
+ 42:ROM            = Address:[8000..FFFF];
+ 43:
+ 44:!WE        = CLK & !RW;
+ 45:!OE        = CLK & RW;
+ 46:!RAM_CS    = RAM & !(IO_LOW_SHADOW # IO_HIGH_SHADOW);
+ 47:!ROM_CS    = ROM;
+ 48:IO_LOW_CS  = IO_LOW_SHADOW;
+ 49:IO_HIGH_CS = IO_HIGH_SHADOW  ;
+ 50:
+ 51:
+
+
+
+Jedec Fuse Checksum       (7265)
+Jedec Transmit Checksum   (8dc5)
