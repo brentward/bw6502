@@ -1,19 +1,19 @@
-LISTING FOR LOGIC DESCRIPTION FILE: MEMORY DECODER.pld               Page 1
+LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-1.pld                     Page 1
 
 CUPL(WM): Universal Compiler for Programmable Logic
 Version 5.0a Serial# 60008009
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-Created Thu May 06 12:15:29 2021
+Created Thu May 06 13:20:34 2021
 
-  1:Name     Memory Decoder ;
+  1:Name     Memory Decoder with VIAx2, ACIA, and Vera;
   2:PartNo   BW-DEC-1 ;
   3:Date     5/6/2021 ;
   4:Revision 01 ;
   5:Designer Brent Bettis ;
   6:Company  Brentward Industries Ltd. ;
   7:Assembly None ;
-  8:Location  ;
-  9:Device   g22V10 ;
+  8:Location Mill Creek, WA, USA ;
+  9:Device   p22V10 ;
  10:
  11:/* *************** INPUT PINS *********************/
  12:PIN 1   = CLK                     ; /*                                 */ 
@@ -59,12 +59,12 @@ Created Thu May 06 12:15:29 2021
  52:!ROM_CS   = ROM;
  53:VIA1_CS   = VIA1_SHADOW;
 
-LISTING FOR LOGIC DESCRIPTION FILE: MEMORY DECODER.pld               Page 2
+LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-1.pld                     Page 2
 
 CUPL(WM): Universal Compiler for Programmable Logic
 Version 5.0a Serial# 60008009
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-Created Thu May 06 12:15:29 2021
+Created Thu May 06 13:20:34 2021
 
  54:VIA2_CS   = VIA2_SHADOW;
  55:ACIA_CS   = ACIA_SHADOW;
@@ -78,5 +78,5 @@ Created Thu May 06 12:15:29 2021
 
 
 
-Jedec Fuse Checksum       (642a)
-Jedec Transmit Checksum   (85ee)
+Jedec Fuse Checksum       (6182)
+Jedec Transmit Checksum   (8457)
