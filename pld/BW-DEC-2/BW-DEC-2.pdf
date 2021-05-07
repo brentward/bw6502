@@ -1,11 +1,11 @@
-{COMPONENT C:\WINCUPL\WINCUPL\BW-DEC-2\BW-DEC-2.SYM
+{COMPONENT C:\USERS\BRENT\DOCUMENTS\PLD\BW-DEC-2\BW-DEC-2.SYM
 
  {ENVIRONMENT
   {PDIFvrev 3.00}
   {Program "CUPL(WM) Version 5.0a"}
   {DBtype "Schematic"}
   {DBvrev 1.01}
-  {DBtime "Thu May 06 21:48:13 2021 "}
+  {DBtime "Fri May 07 12:34:48 2021 "}
   {DBunit "MIL"}
   {DBgrid 10}
   {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
@@ -145,7 +145,7 @@
    {EX
     [Ly "ATTR2"]
     [Ts 12][Tj "CT"][Tr 0][Tm "N"]
-    {At PLD C:\WINCUPL\WINCUPL\BW-DEC-2\BW-DEC-2 195 280}
+    {At PLD C:\USERS\BRENT\DOCUMENTS\PLD\BW-DEC-2\BW-DEC-2 195 280}
    }
   }
  }

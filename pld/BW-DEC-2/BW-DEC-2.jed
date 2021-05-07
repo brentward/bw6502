@@ -1,8 +1,8 @@
 
 CUPL(WM)        5.0a  Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu May 06 21:48:13 2021
-Name            Memory Decoder with 16x general IO 
+Created         Fri May 07 12:34:48 2021
+Name            BW-DEC-2 
 Partno          BW-DEC-2 
 Revision        01 
 Date            5/6/2021 
@@ -41,4 +41,4 @@ Location        Mill Creek, WA, USA
 *L02976 10110111101101110000000000000000
 *L05792 00000000000000000101110111110000
 *C46A6
-*330B
+*2910
