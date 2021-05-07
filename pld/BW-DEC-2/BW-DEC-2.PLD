@@ -66,4 +66,3 @@ ROM_CS    = ROM;
 IO1_CS    = IO1_SHADOW;
 IO2_CS    = IO2_SHADOW;
 
-O2_CS    = IO2_SHADOW;

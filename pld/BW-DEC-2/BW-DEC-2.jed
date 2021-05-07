@@ -1,7 +1,7 @@
 
 CUPL(WM)        5.0a  Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Fri May 07 12:17:17 2021
+Created         Fri May 07 12:27:31 2021
 Name            BW-DEC-2 
 Partno          BW-DEC-2 
 Revision        01 
@@ -48,4 +48,4 @@ Location        Mill Creek, WA, USA
 *L02976 10110111101101110000000000000000
 *L05792 00000000000000000101010111110000
 *C611B
-*5F78
+*5F75

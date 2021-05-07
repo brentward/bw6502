@@ -73,10 +73,3 @@ ACIA_CS   = ACIA_SHADOW;
 VERA_CS   = VERA_SHADOW;
 
 
-
-
-ERA_CS   = VERA_SHADOW;
-
-
-
-

@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Fri May 07 12:17:17 2021
+Created         Fri May 07 12:27:31 2021
 Name            BW-DEC-2 
 Partno          BW-DEC-2 
 Revision        01 
@@ -32,9 +32,6 @@ IO2_CS =>
     A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
 IO2_SHADOW =>
-    A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
-
-O2_CS =>
     A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
 OE =>
@@ -104,7 +101,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     IO1_SHADOW                  0        I        1       -       -     
     IO2_CS                      18       V        1       16      1     
     IO2_SHADOW                  0        I        1       -       -     
-    O2_CS                       0        I        1       -       -     
  !  OE                          22       V        1       10      1     
     RAM                         0        I        1       -       -     
  !  RAM_CS                      21       V        7       12      1     

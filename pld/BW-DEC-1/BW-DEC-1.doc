@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Fri May 07 12:09:00 2021
+Created         Fri May 07 12:28:48 2021
 Name            BW-DEC-1
 Partno          BW-DEC-1 
 Revision        01 
@@ -27,10 +27,6 @@ ACIA_SHADOW =>
 
 Address =>
     A15 , A14 , A13 , A12 , A11 , A10 , A9 , A8 , A7 , A6 , A5 , A4
-
-ERA_CS =>
-    A4 & A5 & !A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
-  # !A4 & !A5 & A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
 OE =>
     CLK & RW
@@ -134,7 +130,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     ACIA_SHADOW                 0        I        1       -       -     
     Address                     0        F        -       -       -     
     CLK                         1        V        -       -       -     
-    ERA_CS                      0        I        2       -       -     
  !  OE                          22       V        1       10      1     
     RAM                         0        I        1       -       -     
  !  RAM_CS                      21       V        10      12      1     
