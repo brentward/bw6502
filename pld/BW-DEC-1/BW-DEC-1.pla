@@ -2,7 +2,7 @@
 #
 # CUPL(WM)        5.0a Serial# 60008009
 # Device          p22v10  Library DLIB-h-40-17
-# Created         Thu May 06 13:20:34 2021
+# Created         Thu May 06 21:55:01 2021
 # Name            Memory Decoder with VIAx2, ACIA, and Vera
 # Partno          BW-DEC-1 
 # Revision        01 
@@ -16,8 +16,8 @@
 #         A6 A7 A8 A9 
 #         A10 A11 A12 A13 
 #         A14 A15 ACIA_CS CLK 
-#         OE RAM_CS ROM_CS RW 
-#         VERA_CS VIA1_CS VIA2_CS WE 
+#         !OE !RAM_CS !ROM_CS RW 
+#         VERA_CS VIA1_CS VIA2_CS !WE 
 # Outputs ACIA_CS !OE RAM_CS !ROM_CS 
 #         VERA_CS VIA1_CS VIA2_CS !WE 
 #         A4.oe A5.oe ACIA_CS.oe OE.oe 

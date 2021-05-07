@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu May 06 13:24:07 2021
+Created         Thu May 06 21:48:13 2021
 Name            Memory Decoder with 16x general IO 
 Partno          BW-DEC-2 
 Revision        01 
@@ -22,53 +22,41 @@ Location        Mill Creek, WA, USA
 Address =>
     A15 , A14 , A13 , A12 , A11 , A10 , A9 , A8 , A7 , A6
 
-IO_HIGH_CS =>
+IO1_CS =>
+    !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+IO1_SHADOW =>
+    !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
+
+IO2_CS =>
     A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
-IO_HIGH_SHADOW =>
+IO2_SHADOW =>
     A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
-IO_LOW_CS =>
-    !A7 & !A8 & !A9 & !A10 & !A11 & !A12 & A13 & !A14 & !A15
-  # A9 & !A11 & !A13 & !A14 & !A15
-  # !A9 & !A11 & A12 & !A13 & !A14 & !A15
-  # !A9 & A10 & !A11 & !A12 & !A13 & !A14 & !A15
-  # A11 & !A13 & !A14 & !A15
-
-IO_LOW_SHADOW =>
-    !A7 & !A8 & !A9 & !A10 & !A11 & !A12 & A13 & !A14 & !A15
-  # A9 & !A11 & !A13 & !A14 & !A15
-  # !A9 & !A11 & A12 & !A13 & !A14 & !A15
-  # !A9 & A10 & !A11 & !A12 & !A13 & !A14 & !A15
-  # A11 & !A13 & !A14 & !A15
-
-!OE =>
+OE =>
     CLK & RW
 
 RAM =>
     !A15
 
-RAM_CS =>
+!RAM_CS =>
     A15
-  # !A7 & !A8 & !A9 & !A10 & !A11 & !A12 & A13 & !A14 & !A15
-  # A9 & !A11 & !A13 & !A14 & !A15
-  # !A9 & !A11 & A12 & !A13 & !A14 & !A15
-  # !A9 & A10 & !A11 & !A12 & !A13 & !A14 & !A15
-  # A11 & !A13 & !A14 & !A15
+  # !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
 ROM =>
     A15
 
-!ROM_CS =>
+ROM_CS =>
     A15
 
-!WE =>
+WE =>
     CLK & !RW
 
-IO_HIGH_CS.oe  =>
+IO1_CS.oe  =>
     1 
 
-IO_LOW_CS.oe  =>
+IO2_CS.oe  =>
     1 
 
 OE.oe  =>
@@ -104,23 +92,23 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A15                         3        V        -       -       -     
     Address                     0        F        -       -       -     
     CLK                         1        V        -       -       -     
-    IO_HIGH_CS                  18       V        1       16      1     
-    IO_HIGH_SHADOW              0        I        1       -       -     
-    IO_LOW_CS                   19       V        5       16      1     
-    IO_LOW_SHADOW               0        I        5       -       -     
-    OE                          23       V        1       8       1     
+    IO1_CS                      19       V        1       16      1     
+    IO1_SHADOW                  0        I        1       -       -     
+    IO2_CS                      18       V        1       16      1     
+    IO2_SHADOW                  0        I        1       -       -     
+ !  OE                          22       V        1       10      1     
     RAM                         0        I        1       -       -     
-    RAM_CS                      21       V        6       12      1     
+ !  RAM_CS                      21       V        2       12      1     
     ROM                         0        I        1       -       -     
-    ROM_CS                      20       V        1       14      1     
+ !  ROM_CS                      20       V        1       14      1     
     RW                          2        V        -       -       -     
-    WE                          22       V        1       10      1     
-    IO_HIGH_CS          oe      18       D        1       1       0     
-    IO_LOW_CS           oe      19       D        1       1       0     
-    OE                  oe      23       D        1       1       0     
+ !  WE                          23       V        1       8       1     
+    IO1_CS              oe      19       D        1       1       0     
+    IO2_CS              oe      18       D        1       1       0     
+    OE                  oe      22       D        1       1       0     
     RAM_CS              oe      21       D        1       1       0     
     ROM_CS              oe      20       D        1       1       0     
-    WE                  oe      22       D        1       1       0     
+    WE                  oe      23       D        1       1       0     
 
 
 LEGEND    D : default variable         F : field      G : group
@@ -141,7 +129,7 @@ AR
 
 Pin #23  05808 Mode  x- 
  00044 -------------------------------------------- 
- 00088 x---x--------------------------------------- 
+ 00088 x----x-------------------------------------- 
  00132 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00176 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00220 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -151,7 +139,7 @@ Pin #23  05808 Mode  x-
  00396 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #22  05810 Mode  x- 
  00440 -------------------------------------------- 
- 00484 x----x-------------------------------------- 
+ 00484 x---x--------------------------------------- 
  00528 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00572 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00616 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -164,11 +152,11 @@ Pin #22  05810 Mode  x-
 Pin #21  05812 Mode  -- 
  00924 -------------------------------------------- 
  00968 --------x----------------------------------- 
- 01012 ---------x---x--x----x---x---x---x---x---x-- 
- 01056 ---------x---x---x-------x------x----------- 
- 01100 ---------x---x---x--x----x-------x---------- 
- 01144 ---------x---x---x---x---x--x----x---------- 
- 01188 ---------x---x---x------x------------------- 
+ 01012 ---------x---x---x---x---x---x--x----x------ 
+ 01056 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 01100 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 01144 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 01188 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01232 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01276 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01320 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -193,11 +181,11 @@ Pin #20  05814 Mode  x-
  02112 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #19  05816 Mode  -- 
  02156 -------------------------------------------- 
- 02200 ---------x---x--x----x---x---x---x---x---x-- 
- 02244 ---------x---x---x-------x------x----------- 
- 02288 ---------x---x---x--x----x-------x---------- 
- 02332 ---------x---x---x---x---x--x----x---------- 
- 02376 ---------x---x---x------x------------------- 
+ 02200 ---------x---x---x---x---x---x--x----x---x-- 
+ 02244 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 02288 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 02332 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 02376 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02420 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02464 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02508 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -291,12 +279,12 @@ LEGEND    X : fuse not blown
                                ______________
                               |    Memory    |
                       CLK x---|1           24|---x Vcc                      
-                       RW x---|2           23|---x OE                       
-                      A15 x---|3           22|---x WE                       
-                      A14 x---|4           21|---x RAM_CS                   
-                      A13 x---|5           20|---x ROM_CS                   
-                      A12 x---|6           19|---x IO_LOW_CS                
-                      A11 x---|7           18|---x IO_HIGH_CS               
+                       RW x---|2           23|---x !WE                      
+                      A15 x---|3           22|---x !OE                      
+                      A14 x---|4           21|---x !RAM_CS                  
+                      A13 x---|5           20|---x !ROM_CS                  
+                      A12 x---|6           19|---x IO1_CS                   
+                      A11 x---|7           18|---x IO2_CS                   
                       A10 x---|8           17|---x                          
                        A9 x---|9           16|---x                          
                        A8 x---|10          15|---x                          

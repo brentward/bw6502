@@ -3,7 +3,7 @@ LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-1.pld                     Page 1
 CUPL(WM): Universal Compiler for Programmable Logic
 Version 5.0a Serial# 60008009
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-Created Thu May 06 13:20:34 2021
+Created Thu May 06 21:55:00 2021
 
   1:Name     Memory Decoder with VIAx2, ACIA, and Vera;
   2:PartNo   BW-DEC-1 ;
@@ -32,10 +32,10 @@ Created Thu May 06 13:20:34 2021
  25:PIN 15  = A4                      ; /*                                 */ 
  26:
  27:/* *************** OUTPUT PINS *********************/
- 28:PIN 23  = OE                      ; /*                                 */ 
- 29:PIN 22  = WE                      ; /*                                 */ 
- 30:PIN 21  = RAM_CS                  ; /*                                 */ 
- 31:PIN 20  = ROM_CS                  ; /*                                 */ 
+ 28:PIN 23  = !WE                     ; /*                                 */ 
+ 29:PIN 22  = !OE                     ; /*                                 */ 
+ 30:PIN 21  = !RAM_CS                 ; /*                                 */ 
+ 31:PIN 20  = !ROM_CS                 ; /*                                 */ 
  32:PIN 19  = VIA1_CS                 ; /*                                 */ 
  33:PIN 18  = VIA2_CS                 ; /*                                 */ 
  34:PIN 17  = ACIA_CS                 ; /*                                 */ 
@@ -53,10 +53,10 @@ Created Thu May 06 13:20:34 2021
  46:VERA_SHADOW = Address:[0230..024F];
  47:ROM         = Address:[8000..FFFF];
  48:
- 49:!WE       = CLK & !RW;
- 50:!OE       = CLK & RW;
- 51:!RAM_CS   = RAM & !(VIA1_SHADOW # VIA2_SHADOW # ACIA_SHADOW # VERA_SHADOW);
- 52:!ROM_CS   = ROM;
+ 49:WE       = CLK & !RW;
+ 50:OE       = CLK & RW;
+ 51:RAM_CS   = RAM & !(VIA1_SHADOW # VIA2_SHADOW # ACIA_SHADOW # VERA_SHADOW);
+ 52:ROM_CS   = ROM;
  53:VIA1_CS   = VIA1_SHADOW;
 
 LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-1.pld                     Page 2
@@ -64,7 +64,7 @@ LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-1.pld                     Page 2
 CUPL(WM): Universal Compiler for Programmable Logic
 Version 5.0a Serial# 60008009
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-Created Thu May 06 13:20:34 2021
+Created Thu May 06 21:55:00 2021
 
  54:VIA2_CS   = VIA2_SHADOW;
  55:ACIA_CS   = ACIA_SHADOW;
@@ -78,5 +78,5 @@ Created Thu May 06 13:20:34 2021
 
 
 
-Jedec Fuse Checksum       (6182)
-Jedec Transmit Checksum   (8457)
+Jedec Fuse Checksum       (6173)
+Jedec Transmit Checksum   (8458)

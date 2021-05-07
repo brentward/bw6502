@@ -5,7 +5,7 @@
   {Program "CUPL(WM) Version 5.0a"}
   {DBtype "Schematic"}
   {DBvrev 1.01}
-  {DBtime "Thu May 06 13:20:34 2021 "}
+  {DBtime "Thu May 06 21:55:01 2021 "}
   {DBunit "MIL"}
   {DBgrid 10}
   {Lyrstr "WIRES" 1 "BUS" 1 "GATE" 2 "IEEE" 2 "PINFUN" 3 "PINNUM" 1 
@@ -51,10 +51,10 @@
    {P ACIA_CS {Pt "I/O"}{Lq 0}{Ploc 300 40}}
    {P VIA2_CS {Pt "I/O"}{Lq 0}{Ploc 300 60}}
    {P VIA1_CS {Pt "I/O"}{Lq 0}{Ploc 300 80}}
-   {P ROM_CS {Pt "I/O"}{Lq 0}{Ploc 300 100}}
-   {P RAM_CS {Pt "I/O"}{Lq 0}{Ploc 300 120}}
-   {P WE {Pt "I/O"}{Lq 0}{Ploc 300 140}}
-   {P OE {Pt "I/O"}{Lq 0}{Ploc 300 160}}
+   {P ROM_CS' {Pt "I/O"}{Lq 0}{Ploc 300 100}}
+   {P RAM_CS' {Pt "I/O"}{Lq 0}{Ploc 300 120}}
+   {P OE' {Pt "I/O"}{Lq 0}{Ploc 300 140}}
+   {P WE' {Pt "I/O"}{Lq 0}{Ploc 300 160}}
   }
 
   {PKG
@@ -115,10 +115,14 @@
    {L 270 40 300 40}
    {L 270 60 300 60}
    {L 270 80 300 80}
-   {L 270 100 300 100}
-   {L 270 120 300 120}
-   {L 270 140 300 140}
-   {L 270 160 300 160}
+   {C 275 100 5}
+   {L 280 100 300 100}
+   {C 275 120 5}
+   {L 280 120 300 120}
+   {C 275 140 5}
+   {L 280 140 300 140}
+   {C 275 160 5}
+   {L 280 160 300 160}
    [Ly "PINNAM"]
    [Tj "LC"]
    {T "CLK" 140 300}
@@ -140,10 +144,10 @@
    {T "ACIA_CS" 260 40}
    {T "VIA2_CS" 260 60}
    {T "VIA1_CS" 260 80}
-   {T "ROM_CS" 260 100}
-   {T "RAM_CS" 260 120}
-   {T "WE" 260 140}
-   {T "OE" 260 160}
+   {T "ROM_CS'" 260 100}
+   {T "RAM_CS'" 260 120}
+   {T "OE'" 260 140}
+   {T "WE'" 260 160}
    [Ly "DEVICE"]
    [Tj "CT"]
    {T "P22V10" 200 -10}
@@ -203,13 +207,13 @@
    }
    {N VIA1_CS
    }
-   {N ROM_CS
+   {N ROM_CS'
    }
-   {N RAM_CS
+   {N RAM_CS'
    }
-   {N WE
+   {N OE'
    }
-   {N OE
+   {N WE'
    }
   }
 
