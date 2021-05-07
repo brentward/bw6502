@@ -13,14 +13,14 @@ PIN   4 =  A14
 PIN   3 =  A15 
 PIN  17 =  ACIA_CS 
 PIN   1 =  CLK 
-PIN  23 =  OE 
-PIN  21 =  RAM_CS 
-PIN  20 =  ROM_CS 
+PIN  22 = !OE 
+PIN  21 = !RAM_CS 
+PIN  20 = !ROM_CS 
 PIN   2 =  RW 
 PIN  16 =  VERA_CS 
 PIN  19 =  VIA1_CS 
 PIN  18 =  VIA2_CS 
-PIN  22 =  WE 
+PIN  23 = !WE 
 %END
 
 %FIELD
@@ -34,13 +34,13 @@ ACIA_CS =>
 ACIA_SHADOW =>
     !A4 & A5 & !A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
-!OE =>
+OE =>
     CLK & RW
 
 RAM =>
     !A15
 
-RAM_CS =>
+!RAM_CS =>
     A15
   # !A4 & !A5 & A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
   # !A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
@@ -48,7 +48,7 @@ RAM_CS =>
 ROM =>
     A15
 
-!ROM_CS =>
+ROM_CS =>
     A15
 
 VERA_CS =>
@@ -71,7 +71,7 @@ VIA2_CS =>
 VIA2_SHADOW =>
     A4 & !A5 & !A6 & !A7 & !A8 & A9 & !A10 & !A11 & !A12 & !A13 & !A14 & !A15
 
-!WE =>
+WE =>
     CLK & !RW
 
 A4.oe  =>

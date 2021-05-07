@@ -3,7 +3,7 @@ LISTING FOR LOGIC DESCRIPTION FILE: BW-DEC-2.pld                     Page 1
 CUPL(WM): Universal Compiler for Programmable Logic
 Version 5.0a Serial# 60008009
 Copyright (c) 1983, 1998 Logical Devices, Inc.
-Created Thu May 06 13:24:07 2021
+Created Thu May 06 21:48:13 2021
 
   1:Name     Memory Decoder with 16x general IO ;
   2:PartNo   BW-DEC-2 ;
@@ -30,12 +30,12 @@ Created Thu May 06 13:24:07 2021
  23:PIN 13  = A6                      ; /*                                 */ 
  24:
  25:/* *************** OUTPUT PINS *********************/
- 26:PIN 23  = OE                      ; /*                                 */ 
- 27:PIN 22  = WE                      ; /*                                 */ 
- 28:PIN 21  = RAM_CS                  ; /*                                 */ 
- 29:PIN 20  = ROM_CS                  ; /*                                 */ 
- 30:PIN 19  = IO_LOW_CS               ; /*                                 */ 
- 31:PIN 18  = IO_HIGH_CS              ; /*                                 */ 
+ 26:PIN 23  = !WE                     ; /*                                 */ 
+ 27:PIN 22  = !OE                     ; /*                                 */ 
+ 28:PIN 21  = !RAM_CS                 ; /*                                 */ 
+ 29:PIN 20  = !ROM_CS                 ; /*                                 */ 
+ 30:PIN 19  = IO1_CS               ; /*                                 */ 
+ 31:PIN 18  = IO2_CS              ; /*                                 */ 
  32:
  33:
  34:/* *************** LOCAL VARIABLES *****************/
@@ -44,20 +44,20 @@ Created Thu May 06 13:24:07 2021
  37:/* *************** LOGIC ***************************/
  38:
  39:RAM            = Address:[0000..7FFF];
- 40:IO_LOW_SHADOW  = Address:[0200..0207F];
- 41:IO_HIGH_SHADOW = Address:[0280..02FF];
+ 40:IO1_SHADOW     = Address:[0200..027F];
+ 41:IO2_SHADOW     = Address:[0280..02FF];
  42:ROM            = Address:[8000..FFFF];
  43:
- 44:!WE        = CLK & !RW;
- 45:!OE        = CLK & RW;
- 46:!RAM_CS    = RAM & !(IO_LOW_SHADOW # IO_HIGH_SHADOW);
- 47:!ROM_CS    = ROM;
- 48:IO_LOW_CS  = IO_LOW_SHADOW;
- 49:IO_HIGH_CS = IO_HIGH_SHADOW  ;
+ 44:WE        = CLK & !RW;
+ 45:OE        = CLK & RW;
+ 46:RAM_CS    = RAM & !(IO1_SHADOW # IO2_SHADOW);
+ 47:ROM_CS    = ROM;
+ 48:IO1_CS    = IO1_SHADOW;
+ 49:IO2_CS    = IO2_SHADOW;
  50:
  51:
 
 
 
-Jedec Fuse Checksum       (6fc1)
-Jedec Transmit Checksum   (8889)
+Jedec Fuse Checksum       (46a6)
+Jedec Transmit Checksum   (330b)
