@@ -139,17 +139,6 @@ CLKOUT
 Text GLabel 6250 1400 0    50   Input ~ 0
 CLK
 $Comp
-L 74xx:74HC00 U4
-U 1 1 5E16D50B
-P 3600 6300
-F 0 "U4" H 3600 6625 50  0000 C CNN
-F 1 "74HC00" H 3600 6534 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 3600 6300 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 3600 6300 50  0001 C CNN
-	1    3600 6300
-	1    0    0    -1  
-$EndComp
-$Comp
 L Oscillator:ACO-xxxMHz X1
 U 1 1 5E1CCFB4
 P 3400 3300
@@ -449,10 +438,10 @@ a13
 Text GLabel 4600 4250 1    50   Input ~ 0
 R~W
 $Comp
-L Device:R R5
+L Device:R R6
 U 1 1 5E1F5B26
 P 8050 5450
-F 0 "R5" V 7950 5450 50  0000 C CNN
+F 0 "R6" V 7950 5450 50  0000 C CNN
 F 1 "20K" V 8050 5450 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7980 5450 50  0001 C CNN
 F 3 "~" H 8050 5450 50  0001 C CNN
@@ -460,10 +449,10 @@ F 3 "~" H 8050 5450 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:CP C4
+L Device:CP C10
 U 1 1 5E2337BD
 P 8350 5050
-F 0 "C4" H 8468 5096 50  0000 L CNN
+F 0 "C10" H 8468 5096 50  0000 L CNN
 F 1 "1uF" H 8468 5005 50  0000 L CNN
 F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 8388 4900 50  0001 C CNN
 F 3 "~" H 8350 5050 50  0001 C CNN
@@ -482,10 +471,10 @@ F 3 "~" H 7750 5000 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:R R4
+L Device:R R5
 U 1 1 5E3A85D8
 P 7750 5150
-F 0 "R4" V 7650 5150 50  0000 C CNN
+F 0 "R5" V 7650 5150 50  0000 C CNN
 F 1 "20K" V 7750 5150 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 7680 5150 50  0001 C CNN
 F 3 "~" H 7750 5150 50  0001 C CNN
@@ -495,10 +484,10 @@ $EndComp
 Text GLabel 9450 5450 2    50   Output ~ 0
 ~RES
 $Comp
-L Device:R R6
+L Device:R R7
 U 1 1 5E552FBE
 P 8700 5450
-F 0 "R6" V 8600 5450 50  0000 C CNN
+F 0 "R7" V 8600 5450 50  0000 C CNN
 F 1 "51K" V 8700 5450 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 8630 5450 50  0001 C CNN
 F 3 "~" H 8700 5450 50  0001 C CNN
@@ -521,10 +510,10 @@ F 3 "~" H 8750 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C10
+L Device:C C9
 U 1 1 5E3E14F5
 P 8300 3600
-F 0 "C10" H 8415 3646 50  0000 L CNN
+F 0 "C9" H 8415 3646 50  0000 L CNN
 F 1 "0.1uF" H 8415 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 8338 3450 50  0001 C CNN
 F 3 "~" H 8300 3600 50  0001 C CNN
@@ -532,10 +521,10 @@ F 3 "~" H 8300 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C9
+L Device:C C8
 U 1 1 5E3E1910
 P 7850 3600
-F 0 "C9" H 7965 3646 50  0000 L CNN
+F 0 "C8" H 7965 3646 50  0000 L CNN
 F 1 "0.1uF" H 7965 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 7888 3450 50  0001 C CNN
 F 3 "~" H 7850 3600 50  0001 C CNN
@@ -543,10 +532,10 @@ F 3 "~" H 7850 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C8
+L Device:C C7
 U 1 1 5E3E1BD5
 P 7400 3600
-F 0 "C8" H 7515 3646 50  0000 L CNN
+F 0 "C7" H 7515 3646 50  0000 L CNN
 F 1 "0.1uF" H 7515 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 7438 3450 50  0001 C CNN
 F 3 "~" H 7400 3600 50  0001 C CNN
@@ -554,10 +543,10 @@ F 3 "~" H 7400 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C6
+L Device:C C5
 U 1 1 5E3E2103
 P 6500 3600
-F 0 "C6" H 6615 3646 50  0000 L CNN
+F 0 "C5" H 6615 3646 50  0000 L CNN
 F 1 "0.1uF" H 6615 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 6538 3450 50  0001 C CNN
 F 3 "~" H 6500 3600 50  0001 C CNN
@@ -565,10 +554,10 @@ F 3 "~" H 6500 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:C C5
+L Device:C C4
 U 1 1 5E3E2489
 P 6050 3600
-F 0 "C5" H 6165 3646 50  0000 L CNN
+F 0 "C4" H 6165 3646 50  0000 L CNN
 F 1 "0.1uF" H 6165 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 6088 3450 50  0001 C CNN
 F 3 "~" H 6050 3600 50  0001 C CNN
@@ -748,20 +737,9 @@ Text GLabel 1100 3250 2    50   Input ~ 0
 a[0..15]
 Text GLabel 2700 2600 2    50   Input ~ 0
 d[0..7]
-$Comp
-L 74xx:74HC00 U4
-U 5 1 5E5C6EF1
-P 2050 6850
-F 0 "U4" H 2280 6896 50  0000 L CNN
-F 1 "74HC00" H 2280 6805 50  0000 L CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 2050 6850 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74hc00" H 2050 6850 50  0001 C CNN
-	5    2050 6850
-	1    0    0    -1  
-$EndComp
-Text GLabel 2050 6250 1    50   Input ~ 0
+Text GLabel 2050 6350 1    50   Input ~ 0
 +5V
-Text GLabel 2050 7450 3    50   Input ~ 0
+Text GLabel 2050 7350 3    50   Input ~ 0
 GND
 Text GLabel 4100 2850 0    50   Input ~ 0
 GND
@@ -780,11 +758,6 @@ Text GLabel 1250 6350 1    50   Input ~ 0
 +5V
 Text GLabel 1250 7350 3    50   Input ~ 0
 GND
-Text GLabel 3300 6400 0    50   Input ~ 0
-+5V
-Text GLabel 3300 6200 0    50   Input ~ 0
-+5V
-NoConn ~ 3900 6300
 Text GLabel 7700 1750 2    50   Output ~ 0
 ~RAM_CS
 $Comp
@@ -854,10 +827,10 @@ F 3 "~" H 2900 1500 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L Device:C C7
+L Device:C C6
 U 1 1 5E3E1DA8
 P 6950 3600
-F 0 "C7" H 7065 3646 50  0000 L CNN
+F 0 "C6" H 7065 3646 50  0000 L CNN
 F 1 "0.1uF" H 7065 3555 50  0000 L CNN
 F 2 "Capacitor_THT:C_Disc_D3.4mm_W2.1mm_P2.50mm" H 6988 3450 50  0001 C CNN
 F 3 "~" H 6950 3600 50  0001 C CNN
@@ -865,10 +838,10 @@ F 3 "~" H 6950 3600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Logic_Programmable:BW-DEC-2 U?
+L 65C02_Computer-rescue:BW-DEC-2-Logic_Programmable U6
 U 1 1 609E77AF
 P 6850 2000
-F 0 "U?" H 6850 2981 50  0000 C CNN
+F 0 "U6" H 6850 2981 50  0000 C CNN
 F 1 "BW-DEC-2" H 6850 2890 50  0000 C CNN
 F 2 "Package_DIP:DIP-24_W7.62mm" H 6850 1950 50  0001 C CNN
 F 3 "~" H 6850 1950 50  0001 C CNN
@@ -1331,10 +1304,6 @@ Wire Bus Line
 Wire Bus Line
 	2700 2600 2600 2600
 Wire Wire Line
-	2050 6250 2050 6350
-Wire Wire Line
-	2050 7350 2050 7450
-Wire Wire Line
 	4100 2850 4200 2850
 Wire Wire Line
 	4600 3450 4600 3400
@@ -1473,17 +1442,6 @@ Wire Wire Line
 	8350 1550 8450 1550
 Wire Wire Line
 	8350 1450 8450 1450
-$Comp
-L 74xx_IEEE:CD74AC138 U?
-U 1 1 60D0F4F3
-P 9000 1650
-F 0 "U?" H 9000 2281 50  0000 C CNN
-F 1 "CD74AC138" H 9000 2190 50  0000 C CNN
-F 2 "Package_DIP:DIP-16_W7.62mm" H 9000 1650 50  0001 C CNN
-F 3 "" H 9000 1650 50  0001 C CNN
-	1    9000 1650
-	1    0    0    -1  
-$EndComp
 NoConn ~ 9550 2150
 NoConn ~ 9550 2050
 NoConn ~ 9550 1950
@@ -1523,6 +1481,83 @@ Wire Wire Line
 	6200 1550 6250 1550
 Wire Wire Line
 	6250 1550 6250 1600
+Text GLabel 8500 1250 0    50   Input ~ 0
++5V
+Wire Wire Line
+	8500 1250 9000 1250
+Wire Wire Line
+	9000 2350 9000 2400
+$Comp
+L 65C02_Computer-rescue:CD74AC138-65C02_Computer-cache U7
+U 1 1 60AC9AD5
+P 9000 1650
+F 0 "U7" H 9000 2231 50  0000 C CNN
+F 1 "CD74AC138" H 9000 2140 50  0000 C CNN
+F 2 "Package_DIP:DIP-16_W7.62mm" H 9000 1650 50  0001 C CNN
+F 3 "" H 9000 1650 50  0001 C CNN
+	1    9000 1650
+	1    0    0    -1  
+$EndComp
+Text GLabel 3700 1600 0    50   Input ~ 0
+~AIRQ
+Text GLabel 3700 1800 0    50   Input ~ 0
+~V1IRQ
+Text GLabel 3700 2000 0    50   Input ~ 0
+~V2IRQ
+Wire Wire Line
+	3700 1600 4050 1600
+Wire Wire Line
+	4050 1600 4050 1700
+Wire Wire Line
+	3700 1800 4050 1800
+Wire Wire Line
+	3700 2000 4050 2000
+Wire Wire Line
+	4050 2000 4050 1900
+$Comp
+L Device:R R4
+U 1 1 60B10BDF
+P 4050 1300
+F 0 "R4" V 3950 1300 50  0000 C CNN
+F 1 "3K3" V 4050 1300 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3980 1300 50  0001 C CNN
+F 3 "~" H 4050 1300 50  0001 C CNN
+	1    4050 1300
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4050 1450 4050 1600
+Connection ~ 4050 1600
+Text GLabel 4050 1000 1    50   Input ~ 0
++5V
+Wire Wire Line
+	4050 1150 4050 1000
+Text GLabel 4900 1800 2    50   Output ~ 0
+~IRQ
+Wire Wire Line
+	4650 1800 4900 1800
+$Comp
+L 74xx:SN74HC11 U?
+U 2 1 609D7628
+P 4350 1800
+F 0 "U?" H 4350 2125 50  0000 C CNN
+F 1 "SN74HC11" H 4350 2034 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 4350 1800 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn54hc11-sp.pdf" H 4350 1800 50  0001 C CNN
+	2    4350 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:SN74HC11 U?
+U 4 1 609D9475
+P 2050 6850
+F 0 "U?" H 2280 6896 50  0000 L CNN
+F 1 "SN74HC11" H 2280 6805 50  0000 L CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 2050 6850 50  0001 C CNN
+F 3 "https://www.ti.com/lit/ds/symlink/sn54hc11-sp.pdf" H 2050 6850 50  0001 C CNN
+	4    2050 6850
+	1    0    0    -1  
+$EndComp
 Wire Bus Line
 	3100 5450 3100 5650
 Wire Bus Line

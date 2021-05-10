@@ -321,8 +321,8 @@ L 6502:65C22S U?
 U 1 1 5F285E91
 P 1550 4300
 AR Path="/5F285E91" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E91" Ref="U6"  Part="1" 
-F 0 "U6" H 1550 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E91" Ref="U8"  Part="1" 
+F 0 "U8" H 1550 5450 50  0000 C CNN
 F 1 "65C22S" H 1550 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 1650 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 1650 4300 50  0001 C CNN
@@ -334,8 +334,8 @@ L 6502:65C22S U?
 U 1 1 5F285E8B
 P 3800 4300
 AR Path="/5F285E8B" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E8B" Ref="U7"  Part="1" 
-F 0 "U7" H 3800 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E8B" Ref="U9"  Part="1" 
+F 0 "U9" H 3800 5450 50  0000 C CNN
 F 1 "65C22S" H 3800 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 3900 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 3900 4300 50  0001 C CNN
@@ -347,8 +347,8 @@ L 6502:65C51N U?
 U 1 1 5F1AD73D
 P 7350 1750
 AR Path="/5F1AD73D" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F1AD73D" Ref="U10"  Part="1" 
-F 0 "U10" H 7350 2650 50  0000 C CNN
+AR Path="/5F14295C/5F1AD73D" Ref="U12"  Part="1" 
+F 0 "U12" H 7350 2650 50  0000 C CNN
 F 1 "65C51N" H 7350 2550 50  0000 C CNN
 F 2 "Package_DIP:DIP-28_W15.24mm_Socket" H 7350 1750 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf" H 7350 1750 50  0001 C CNN
@@ -790,8 +790,8 @@ L Device:R R?
 U 1 1 613FD53D
 P 2000 1200
 AR Path="/613FD53D" Ref="R?"  Part="1" 
-AR Path="/5F14295C/613FD53D" Ref="R8"  Part="1" 
-F 0 "R8" V 1900 1200 50  0000 C CNN
+AR Path="/5F14295C/613FD53D" Ref="R9"  Part="1" 
+F 0 "R9" V 1900 1200 50  0000 C CNN
 F 1 "10K" V 2000 1200 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1930 1200 50  0001 C CNN
 F 3 "~" H 2000 1200 50  0001 C CNN
@@ -803,8 +803,8 @@ L Device:R R?
 U 1 1 6140F962
 P 3150 1000
 AR Path="/6140F962" Ref="R?"  Part="1" 
-AR Path="/5F14295C/6140F962" Ref="R9"  Part="1" 
-F 0 "R9" V 3050 1000 50  0000 C CNN
+AR Path="/5F14295C/6140F962" Ref="R10"  Part="1" 
+F 0 "R10" V 3050 1000 50  0000 C CNN
 F 1 "10K" V 3150 1000 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3080 1000 50  0001 C CNN
 F 3 "~" H 3150 1000 50  0001 C CNN
@@ -816,8 +816,8 @@ L Device:R R?
 U 1 1 613EB533
 P 1100 1250
 AR Path="/613EB533" Ref="R?"  Part="1" 
-AR Path="/5F14295C/613EB533" Ref="R7"  Part="1" 
-F 0 "R7" V 1000 1250 50  0000 C CNN
+AR Path="/5F14295C/613EB533" Ref="R8"  Part="1" 
+F 0 "R8" V 1000 1250 50  0000 C CNN
 F 1 "10K" V 1100 1250 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1030 1250 50  0001 C CNN
 F 3 "~" H 1100 1250 50  0001 C CNN
@@ -1250,10 +1250,10 @@ Wire Wire Line
 Wire Wire Line
 	1100 2000 2150 2000
 $Comp
-L 74xx:74HC595 U8
+L 74xx:74HC595 U10
 U 1 1 618C8340
 P 3850 1750
-F 0 "U8" H 3850 2531 50  0000 C CNN
+F 0 "U10" H 3850 2531 50  0000 C CNN
 F 1 "74HC595" H 3850 2440 50  0000 C CNN
 F 2 "Package_DIP:DIP-16_W7.62mm_Socket" H 3850 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 3850 1750 50  0001 C CNN
@@ -1261,10 +1261,10 @@ F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 3850 1750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xx:74HC595 U9
+L 74xx:74HC595 U11
 U 1 1 618C9505
 P 5500 1750
-F 0 "U9" H 5500 2531 50  0000 C CNN
+F 0 "U11" H 5500 2531 50  0000 C CNN
 F 1 "74HC595" H 5500 2440 50  0000 C CNN
 F 2 "Package_DIP:DIP-16_W7.62mm_Socket" H 5500 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 5500 1750 50  0001 C CNN
@@ -1426,7 +1426,7 @@ Wire Wire Line
 Wire Wire Line
 	2750 2000 2750 2850
 Text Label 2900 2450 0    50   ~ 0
-v2pa8
+v1pa8
 Entry Wire Line
 	2800 2350 2900 2450
 Wire Wire Line
