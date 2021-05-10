@@ -1,8 +1,8 @@
 
 CUPL(WM)        5.0a  Serial# 60008009
 Device          p22v10  Library DLIB-h-40-17
-Created         Thu May 06 21:55:01 2021
-Name            Memory Decoder with VIAx2, ACIA, and Vera
+Created         Fri May 07 12:36:35 2021
+Name            BW-DEC-1
 Partno          BW-DEC-1 
 Revision        01 
 Date            5/6/2021 
@@ -52,4 +52,4 @@ Location        Mill Creek, WA, USA
 *L05792 00000000000000000101110111111111
 *L05824 0101
 *C6173
-*8458
+*78E3
