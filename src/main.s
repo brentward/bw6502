@@ -8,9 +8,9 @@
   .include lib/zeropage.s
 
 ; variables
-kb_buffer = $0200 ; 256 bytes 0x0200-0x02ff
-screen_buf = $0300 ; 256 bytes 0x0300-0x03ff
-decimal_string = $0400 ; 6 bytes 0x0400-0x0405
+kb_buffer = $0300 ; 256 bytes 0x0200-0x02ff
+screen_buf = $0400 ; 256 bytes 0x0300-0x03ff
+decimal_string = $0500 ; 6 bytes 0x0400-0x0405
 
 
 reset:
