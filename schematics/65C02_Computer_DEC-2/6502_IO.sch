@@ -20,8 +20,6 @@ GND
 NoConn ~ 6850 1700
 NoConn ~ 6850 2100
 NoConn ~ 6850 1500
-Text GLabel 7950 1000 1    50   Input ~ 0
-R~W
 Text GLabel 8100 1000 1    50   Input ~ 0
 CLK
 Text Label 8400 2100 2    50   ~ 0
@@ -75,7 +73,7 @@ TxD
 Text GLabel 6750 2150 0    50   Input ~ 0
 RxD
 Text GLabel 8250 1000 1    50   Output ~ 0
-~AIRQ
+~IRQ_OD
 Text GLabel 8100 2500 3    50   Input ~ 0
 GND
 Text GLabel 6450 2350 3    50   BiDi ~ 0
@@ -178,8 +176,6 @@ Text Label 750  4500 0    50   ~ 0
 v1pb2
 Text Label 750  4600 0    50   ~ 0
 v1pb3
-Text Label 750  4700 0    50   ~ 0
-v1pb4
 Text Label 750  4800 0    50   ~ 0
 v1pb5
 Text Label 750  4900 0    50   ~ 0
@@ -243,8 +239,6 @@ Entry Wire Line
 Entry Wire Line
 	650  4700 750  4600
 Entry Wire Line
-	650  4800 750  4700
-Entry Wire Line
 	650  4900 750  4800
 Entry Wire Line
 	650  5000 750  4900
@@ -304,25 +298,12 @@ F 3 "http://service.powerdynamics.com/ec/Catalog17/Section%2011.pdf" H 9400 2500
 	1    0    0    -1  
 $EndComp
 $Comp
-L Oscillator:ACO-xxxMHz X?
-U 1 1 5F4F8D3E
-P 9400 1300
-AR Path="/5F4F8D3E" Ref="X?"  Part="1" 
-AR Path="/5F14295C/5F4F8D3E" Ref="X2"  Part="1" 
-F 0 "X2" H 9150 1350 50  0000 R CNN
-F 1 "1.8432MHz" H 9150 1250 50  0000 R CNN
-F 2 "Oscillator:Oscillator_DIP-8" H 9850 950 50  0001 C CNN
-F 3 "http://www.conwin.com/datasheets/cx/cx030.pdf" H 9300 1300 50  0001 C CNN
-	1    9400 1300
-	1    0    0    -1  
-$EndComp
-$Comp
 L 6502:65C22S U?
 U 1 1 5F285E91
 P 1550 4300
 AR Path="/5F285E91" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E91" Ref="U6"  Part="1" 
-F 0 "U6" H 1550 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E91" Ref="U8"  Part="1" 
+F 0 "U8" H 1550 5450 50  0000 C CNN
 F 1 "65C22S" H 1550 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 1650 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 1650 4300 50  0001 C CNN
@@ -334,8 +315,8 @@ L 6502:65C22S U?
 U 1 1 5F285E8B
 P 3800 4300
 AR Path="/5F285E8B" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F285E8B" Ref="U7"  Part="1" 
-F 0 "U7" H 3800 5450 50  0000 C CNN
+AR Path="/5F14295C/5F285E8B" Ref="U9"  Part="1" 
+F 0 "U9" H 3800 5450 50  0000 C CNN
 F 1 "65C22S" H 3800 5350 50  0000 C CNN
 F 2 "Package_DIP:DIP-40_W15.24mm_Socket" H 3900 4300 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c22.pdf" H 3900 4300 50  0001 C CNN
@@ -347,8 +328,8 @@ L 6502:65C51N U?
 U 1 1 5F1AD73D
 P 7350 1750
 AR Path="/5F1AD73D" Ref="U?"  Part="1" 
-AR Path="/5F14295C/5F1AD73D" Ref="U10"  Part="1" 
-F 0 "U10" H 7350 2650 50  0000 C CNN
+AR Path="/5F14295C/5F1AD73D" Ref="U12"  Part="1" 
+F 0 "U12" H 7350 2650 50  0000 C CNN
 F 1 "65C51N" H 7350 2550 50  0000 C CNN
 F 2 "Package_DIP:DIP-28_W15.24mm_Socket" H 7350 1750 50  0001 C CNN
 F 3 "https://www.westerndesigncenter.com/wdc/documentation/w65c51n.pdf" H 7350 1750 50  0001 C CNN
@@ -405,12 +386,8 @@ Entry Wire Line
 	2600 4700 2700 4600
 Entry Wire Line
 	2600 4800 2700 4700
-Text Label 2600 3500 2    50   ~ 0
-v1pa9
 Text Label 2600 3400 2    50   ~ 0
 v1pa8
-Entry Wire Line
-	2600 3500 2700 3400
 Entry Wire Line
 	2600 3400 2700 3300
 Text Label 4850 3500 2    50   ~ 0
@@ -735,7 +712,7 @@ Text GLabel 1750 6400 0    50   Input ~ 0
 Text GLabel 1550 6300 0    50   Input ~ 0
 GND
 $Comp
-L Connector:Barrel_Jack J4
+L 65C02_Computer-rescue:Barrel_Jack-Connector J4
 U 1 1 5E59BEED
 P 2050 7100
 F 0 "J4" H 2107 7425 50  0000 C CNN
@@ -756,7 +733,7 @@ U 6 1 6117F788
 P 1550 1550
 F 0 "U1" H 1550 1867 50  0000 C CNN
 F 1 "74HC14" H 1550 1776 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 1550 1550 50  0001 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 1550 1550 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 1550 1550 50  0001 C CNN
 	6    1550 1550
 	1    0    0    -1  
@@ -769,7 +746,7 @@ U 5 1 612F8A73
 P 2450 1200
 F 0 "U1" H 2450 1517 50  0000 C CNN
 F 1 "74HC14" H 2450 1426 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 2450 1200 50  0001 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 2450 1200 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 2450 1200 50  0001 C CNN
 	5    2450 1200
 	1    0    0    -1  
@@ -780,7 +757,7 @@ U 4 1 612FA70E
 P 2450 2000
 F 0 "U1" H 2450 2317 50  0000 C CNN
 F 1 "74HC14" H 2450 2226 50  0000 C CNN
-F 2 "Package_DIP:DIP-14_W7.62mm_Socket" H 2450 2000 50  0001 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm" H 2450 2000 50  0001 C CNN
 F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 2450 2000 50  0001 C CNN
 	4    2450 2000
 	1    0    0    -1  
@@ -790,8 +767,8 @@ L Device:R R?
 U 1 1 613FD53D
 P 2000 1200
 AR Path="/613FD53D" Ref="R?"  Part="1" 
-AR Path="/5F14295C/613FD53D" Ref="R8"  Part="1" 
-F 0 "R8" V 1900 1200 50  0000 C CNN
+AR Path="/5F14295C/613FD53D" Ref="R9"  Part="1" 
+F 0 "R9" V 1900 1200 50  0000 C CNN
 F 1 "10K" V 2000 1200 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1930 1200 50  0001 C CNN
 F 3 "~" H 2000 1200 50  0001 C CNN
@@ -803,8 +780,8 @@ L Device:R R?
 U 1 1 6140F962
 P 3150 1000
 AR Path="/6140F962" Ref="R?"  Part="1" 
-AR Path="/5F14295C/6140F962" Ref="R9"  Part="1" 
-F 0 "R9" V 3050 1000 50  0000 C CNN
+AR Path="/5F14295C/6140F962" Ref="R10"  Part="1" 
+F 0 "R10" V 3050 1000 50  0000 C CNN
 F 1 "10K" V 3150 1000 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 3080 1000 50  0001 C CNN
 F 3 "~" H 3150 1000 50  0001 C CNN
@@ -816,8 +793,8 @@ L Device:R R?
 U 1 1 613EB533
 P 1100 1250
 AR Path="/613EB533" Ref="R?"  Part="1" 
-AR Path="/5F14295C/613EB533" Ref="R7"  Part="1" 
-F 0 "R7" V 1000 1250 50  0000 C CNN
+AR Path="/5F14295C/613EB533" Ref="R8"  Part="1" 
+F 0 "R8" V 1000 1250 50  0000 C CNN
 F 1 "10K" V 1100 1250 50  0000 C CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" V 1030 1250 50  0001 C CNN
 F 3 "~" H 1100 1250 50  0001 C CNN
@@ -1003,8 +980,6 @@ Wire Wire Line
 Wire Wire Line
 	750  4600 1050 4600
 Wire Wire Line
-	750  4700 1050 4700
-Wire Wire Line
 	750  4800 1050 4800
 Wire Wire Line
 	750  4900 1050 4900
@@ -1088,8 +1063,6 @@ Wire Wire Line
 	2050 4700 2600 4700
 Wire Wire Line
 	2050 4800 2600 4800
-Wire Wire Line
-	2050 3500 2600 3500
 Wire Wire Line
 	4300 3400 4850 3400
 Wire Wire Line
@@ -1250,23 +1223,23 @@ Wire Wire Line
 Wire Wire Line
 	1100 2000 2150 2000
 $Comp
-L 74xx:74HC595 U8
+L 74xx:74HC595 U10
 U 1 1 618C8340
 P 3850 1750
-F 0 "U8" H 3850 2531 50  0000 C CNN
+F 0 "U10" H 3850 2531 50  0000 C CNN
 F 1 "74HC595" H 3850 2440 50  0000 C CNN
-F 2 "Package_DIP:DIP-16_W7.62mm_Socket" H 3850 1750 50  0001 C CNN
+F 2 "Package_DIP:DIP-16_W7.62mm" H 3850 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 3850 1750 50  0001 C CNN
 	1    3850 1750
 	1    0    0    -1  
 $EndComp
 $Comp
-L 74xx:74HC595 U9
+L 74xx:74HC595 U11
 U 1 1 618C9505
 P 5500 1750
-F 0 "U9" H 5500 2531 50  0000 C CNN
+F 0 "U11" H 5500 2531 50  0000 C CNN
 F 1 "74HC595" H 5500 2440 50  0000 C CNN
-F 2 "Package_DIP:DIP-16_W7.62mm_Socket" H 5500 1750 50  0001 C CNN
+F 2 "Package_DIP:DIP-16_W7.62mm" H 5500 1750 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/sn74hc595.pdf" H 5500 1750 50  0001 C CNN
 	1    5500 1750
 	1    0    0    -1  
@@ -1426,7 +1399,7 @@ Wire Wire Line
 Wire Wire Line
 	2750 2000 2750 2850
 Text Label 2900 2450 0    50   ~ 0
-v2pa8
+v1pa8
 Entry Wire Line
 	2800 2350 2900 2450
 Wire Wire Line
@@ -1450,12 +1423,28 @@ Wire Wire Line
 	6850 1200 6600 1200
 Wire Wire Line
 	6600 1200 6600 1000
+Text GLabel 7950 1000 1    50   Input ~ 0
+R~W
+NoConn ~ 1050 4700
+NoConn ~ 2050 3500
+Wire Bus Line
+	2700 3000 2700 3300
+$Comp
+L Oscillator:TFT660 X2
+U 1 1 60C9DB43
+P 9400 1300
+F 0 "X2" H 9744 1346 50  0000 L CNN
+F 1 "TFT660" H 9744 1255 50  0000 L CNN
+F 2 "Oscillator:Oscillator_DIP-8" H 9850 950 50  0001 C CNN
+F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/OSZI.pdf" H 9300 1300 50  0001 C CNN
+	1    9400 1300
+	1    0    0    -1  
+$EndComp
+NoConn ~ 9100 1300
 Wire Bus Line
 	6250 1200 6250 1350
 Wire Bus Line
 	4950 3000 4950 3400
-Wire Bus Line
-	2700 3000 2700 3400
 Wire Bus Line
 	4950 3500 4950 3800
 Wire Bus Line

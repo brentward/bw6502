@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SN74HC11
+D Triple 3-input AND
+K TTL And3
+F https://www.ti.com/lit/ds/symlink/sn54hc11-sp.pdf
+$ENDCMP
+#
+#End Doc Library
