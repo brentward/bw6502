@@ -22,7 +22,7 @@ reset:
   jsr via_init
   jsr lcd_init
   jsr kb_init
-  jmp acia_init
+  ; jmp acia_init
 
   cli
 

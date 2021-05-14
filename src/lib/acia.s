@@ -69,27 +69,45 @@ acia_init:
   lda #%00001011
   sta ACIA_COMMAND
 
-.write
+send:
   ldx #0
-.next_char:
-.wait_tx_dr_empty:
-  lda ACIA_STATUS
-  ; and #ACIA_TX_DR_EMPTY
-  and #$10
-  beq .wait_tx_dr_empty
-  lda text,x
-  beq .read
+
+send_loop:
+  lda acia_text,x
   sta ACIA_TX_RX_DATA
+  lda #10
+  jsr wait_ms
+  txa
+  sbc #11
+  beq send
   inx
-  jmp .next_char
-
-.read:
-.wait_rx_dr_full:
   lda ACIA_STATUS
-  ; and #ACIA_RX_DR_FULL
-  and #$08
-  beq .wait_rx_dr_full
   lda ACIA_TX_RX_DATA
-  jmp .write
+  jmp send_loop
 
-text: .byte "Hello World!", $0d, $0a, $00
+
+
+; .write
+;   ldx #0
+; .next_char:
+; .wait_tx_dr_empty:
+;   lda ACIA_STATUS
+;   ; and #ACIA_TX_DR_EMPTY
+;   and #$10
+;   beq .wait_tx_dr_empty
+;   lda acia_text,x
+;   beq .read
+;   sta ACIA_TX_RX_DATA
+;   inx
+;   jmp .next_char
+
+; .read:
+; .wait_rx_dr_full:
+;   lda ACIA_STATUS
+;   ; and #ACIA_RX_DR_FULL
+;   and #$08
+;   beq .wait_rx_dr_full
+;   lda ACIA_TX_RX_DATA
+;   jmp .write
+
+acia_text: .asciiz "Hello, Sam! "
