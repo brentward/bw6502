@@ -1,5 +1,6 @@
   .org $8000
 
+  .include lib/acia.s
   .include lib/lcd.s
   .include lib/decimal.s
   .include lib/via.s
@@ -21,6 +22,7 @@ reset:
   jsr via_init
   jsr lcd_init
   jsr kb_init
+  jmp acia_init
 
   cli
 
