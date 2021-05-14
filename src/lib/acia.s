@@ -1,11 +1,10 @@
 ; ACIA Ports
 ACIA_BASE = $0220
-ACIA_TX_DR = ACIA_BASE + $0
-ACIA_RX_DR = ACIA_BASE + $0
+ACIA_TX_RX_DATA = ACIA_BASE + $0
 ACIA_STATUS = ACIA_BASE + $1
 ACIA_RESET = ACIA_BASE + $1
-ACIA_CONTROL = ACIA_BASE + $2
-ACIA_COMMAND = ACIA_BASE + $3
+ACIA_COMMAND = ACIA_BASE + $2
+ACIA_CONTROL: = ACIA_BASE + $3
 
 ; ACIA Status Register
 ACIA_INT_ENABLE       = %10000000
@@ -61,30 +60,36 @@ ACIA_RX_IRQB_DISABLED = %00000010
 ACIA_DTR = %00000001
 
 acia_init:
-  lda #(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L_TX_INT_DISABLED | ACIA_RX_IRQB_DISABLED| ACIA_DTR)
-  sta ACIA_COMMAND
-  lda #(ACIA_1_SBN | ACIA_WL_8 | ACIA_RX_CLOCK_BAUD_RATE | ACIA_BAUD_19200)
+  stz ACIA_STATUS
+  ; lda #(ACIA_1_SBN | ACIA_WL_8 | ACIA_RX_CLOCK_BAUD_RATE | ACIA_BAUD_9600)
+  lda #%00011110
   sta ACIA_CONTROL
+
+  ; lda #(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L_TX_INT_DISABLED | ACIA_RX_IRQB_DISABLED| ACIA_DTR)
+  lda #%00001011
+  sta ACIA_COMMAND
 
 .write
   ldx #0
 .next_char:
 .wait_tx_dr_empty:
   lda ACIA_STATUS
-  and #ACIA_TX_DR_EMPTY
+  ; and #ACIA_TX_DR_EMPTY
+  and #$10
   beq .wait_tx_dr_empty
   lda text,x
   beq .read
-  sta ACIA_TX_DR
+  sta ACIA_TX_RX_DATA
   inx
   jmp .next_char
 
 .read:
 .wait_rx_dr_full:
   lda ACIA_STATUS
-  and #ACIA_RX_DR_FULL
+  ; and #ACIA_RX_DR_FULL
+  and #$08
   beq .wait_rx_dr_full
-  lda ACIA_RX_DR
+  lda ACIA_TX_RX_DATA
   jmp .write
 
 text: .byte "Hello World!", $0d, $0a, $00
