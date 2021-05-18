@@ -1,0 +1,150 @@
+ca65 V2.18 - N/A
+Main file   : src/acia.s
+Current file: src/acia.s
+
+000000r 1               ; ACIA Ports
+000000r 1               ACIA_BASE = $0220
+000000r 1               ACIA_TX_RX_DATA = ACIA_BASE + $0
+000000r 1               ACIA_STATUS = ACIA_BASE + $1
+000000r 1               ACIA_RESET = ACIA_BASE + $1
+000000r 1               ACIA_COMMAND = ACIA_BASE + $2
+000000r 1               ACIA_CONTROL = ACIA_BASE + $3
+000000r 1               
+000000r 1               ; ACIA Status Register
+000000r 1               ACIA_INT_ENABLE       = %10000000
+000000r 1               ACIA_DSR_NOT_READY    = %01000000
+000000r 1               ACIA_DCD_NOT_DETECTED = %00100000
+000000r 1               ACIA_TX_DR_EMPTY      = %00010000
+000000r 1               ACIA_RX_DR_FULL       = %00001000
+000000r 1               ACIA_OVERFLOW_ERROR   = %00000100
+000000r 1               ACIA_FRAMING_ERROR    = %00000010
+000000r 1               ACIA_PARITY_ERROR     = %00000001
+000000r 1               
+000000r 1               ; ACIA Control Register
+000000r 1               ; Stop Bit Number (SBN) bit 7
+000000r 1               ACIA_1_SBN = %00000000
+000000r 1               ACIA_2_SBN = %10000000
+000000r 1               ; Word Length (WL) bits 6-5
+000000r 1               ACIA_WL_8 = %00000000
+000000r 1               ACIA_WL_7 = %00100000
+000000r 1               ACIA_WL_6 = %01000000
+000000r 1               ACIA_WL_5 = %01100000
+000000r 1               ; Receiver Clock Source (RCS) bit 4
+000000r 1               ACIA_RX_CLOCK_EXTERNAL  = %00000000
+000000r 1               ACIA_RX_CLOCK_BAUD_RATE = %00010000
+000000r 1               ; Selected Baud Rate (SBR) bits 3-0
+000000r 1               ACIA_BAUD_115200   = %00000000
+000000r 1               ACIA_BAUD_50       = %00000001
+000000r 1               ACIA_BAUD_75       = %00000010
+000000r 1               ACIA_BAUD_109_92   = %00000011
+000000r 1               ACIA_BAUD_134_58   = %00000100
+000000r 1               ACIA_BAUD_150      = %00000101
+000000r 1               ACIA_BAUD_300      = %00000110
+000000r 1               ACIA_BAUD_600      = %00000111
+000000r 1               ACIA_BAUD_1200     = %00001000
+000000r 1               ACIA_BAUD_1800     = %00001001
+000000r 1               ACIA_BAUD_2400     = %00001010
+000000r 1               ACIA_BAUD_3600     = %00001011
+000000r 1               ACIA_BAUD_4800     = %00001100
+000000r 1               ACIA_BAUD_7200     = %00001101
+000000r 1               ACIA_BAUD_9600     = %00001110
+000000r 1               ACIA_BAUD_19200    = %00001111
+000000r 1               
+000000r 1               ; ACIA Command Register
+000000r 1               ACIA_NO_PARITY      = %00000000
+000000r 1               ACIA_NO_ECHO        = %00000000
+000000r 1               ACIA_ECHO_MODE      = %00010000
+000000r 1               ; Transmitter Interrupt Control (TIC)
+000000r 1               ACIA_RTSB_H_TX_INT_DISABLED          = %00000000
+000000r 1               ACIA_RTSB_L_TX_INT_DISABLED          = %00001000
+000000r 1               ACIA_RTSB_L_TX_INT_DISABLED_TX_BREAK = %00001100
+000000r 1               ; Receiver Interrupt Request Disabled (IRD)
+000000r 1               ACIA_RX_IRQB_DISABLED = %00000010
+000000r 1               ; Data Terminal Ready (DTR)
+000000r 1               ACIA_DTR = %00000001
+000000r 1               
+000000r 1               acia_init:
+000000r 1  48             pha
+000001r 1  9C 21 02       stz ACIA_RESET
+000004r 1  A9 10          lda #(ACIA_1_SBN | ACIA_WL_8 | ACIA_RX_CLOCK_BAUD_RATE | ACIA_BAUD_115200)
+000006r 1                 ; lda #%00011111
+000006r 1  8D 23 02       sta ACIA_CONTROL
+000009r 1               
+000009r 1  A9 0B          lda #(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L_TX_INT_DISABLED | ACIA_RX_IRQB_DISABLED| ACIA_DTR)
+00000Br 1                 ; lda #%00001011
+00000Br 1  8D 22 02       sta ACIA_COMMAND
+00000Er 1  68             pla
+00000Fr 1  60             rts
+000010r 1               
+000010r 1               ; acia_send:
+000010r 1               ; .write:
+000010r 1               ;   ldx #0
+000010r 1               
+000010r 1               ; .send_loop:
+000010r 1               ;   lda acia_text,x
+000010r 1               ;   sta ACIA_TX_RX_DATA
+000010r 1               ;   ; lda #1
+000010r 1               ;   ; jsr wait_ms
+000010r 1               ;   jsr delay_6551
+000010r 1               ;   txa
+000010r 1               ;   sbc #11
+000010r 1               ;   beq acia_send
+000010r 1               ;   inx
+000010r 1               ;   lda ACIA_STATUS
+000010r 1               ;   lda ACIA_TX_RX_DATA
+000010r 1               ;   jmp .send_loop
+000010r 1               
+000010r 1               
+000010r 1               
+000010r 1               acia_write:
+000010r 1  8D 20 02       sta ACIA_TX_RX_DATA
+000013r 1  20 rr rr       jsr delay_6551
+000016r 1  60             rts
+000017r 1               
+000017r 1               ; reads byte into A register and blocks until byte is available
+000017r 1               acia_read:
+000017r 1  AD 21 02       lda ACIA_STATUS
+00001Ar 1  29 08          and #ACIA_RX_DR_FULL
+00001Cr 1  F0 F9          beq acia_read
+00001Er 1  AD 20 02       lda ACIA_TX_RX_DATA
+000021r 1  60             rts
+000022r 1               
+000022r 1               ; checks for byte and loads into A register. Carry set if byte is available, cleard if no byte
+000022r 1               acia_check:
+000022r 1  AD 21 02     	lda	ACIA_STATUS
+000025r 1  29 08        	and	#ACIA_RX_DR_FULL
+000027r 1  F0 05        	beq	acia_check_no_data
+000029r 1  AD 20 02     	lda	ACIA_TX_RX_DATA
+00002Cr 1  38           	sec		; Carry set if key available
+00002Dr 1  60           	rts
+00002Er 1               acia_check_no_data:
+00002Er 1  18           	clc		; Carry clear if no key pressed
+00002Fr 1  60           	rts
+000030r 1               
+000030r 1               
+000030r 1               ; Latest WDC 65C51 has a bug - Xmit bit in status register is stuck on
+000030r 1               ; IRQ driven transmit is not possible as a result - interrupts are endlessly triggered
+000030r 1               ; Polled I/O mode also doesn't work as the Xmit bit is polled - delay routine is the only option
+000030r 1               ; The following delay routine kills time to allow W65C51 to complete a character transmit
+000030r 1               ; 0.523 milliseconds required loop time for 19,200 baud rate
+000030r 1               ; .mini_delay routine takes 524 clock cycles to complete - X Reg is used for the count loop
+000030r 1               ; Y Reg is loaded with the CPU clock rate in MHz (whole increments only) and used as a multiplier
+000030r 1               ;
+000030r 1               delay_6551:
+000030r 1  5A             phy      ;Save Y Reg
+000031r 1  DA             phx      ;Save X Reg
+000032r 1                 ; ldy   #2    ;Get delay value (clock rate in MHz 2 clock cycles)
+000032r 1  A0 01          ldy   #1    ;Get delay value (clock rate in MHz 1 clock cycles)
+000034r 1               
+000034r 1               delay_clock_multiplier_loop:
+000034r 1  A2 11          ldx   #$11      ;Seed X reg, $11 works for 115200 baud, $68 for 19200
+000036r 1               delay_baud_loop:
+000036r 1  CA             dex         ;Decrement low index
+000037r 1  D0 FD          bne   delay_baud_loop   ;Loop back until done
+000039r 1  88             dey         ;Decrease by one
+00003Ar 1  D0 F8          bne   delay_clock_multiplier_loop   ;Loop until done
+00003Cr 1  FA             plx         ;Restore X Reg
+00003Dr 1  7A             ply         ;Restore Y Reg
+00003Er 1               delay_done:
+00003Er 1  60             rts         ;Delay done, return
+00003Er 1               

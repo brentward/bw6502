@@ -15,15 +15,13 @@ decimal_string = $0500 ; 6 bytes 0x0500-0x0505
 
 
 reset:
-  sei
-  ldx #$ff
+  ldx #$FF
   txs            ; Initialize stack pointer with ff (addr 0x01ff)
 
   jsr via_init
   jsr lcd_init
   jsr kb_init
-  ; jmp acia_init
-
+  jsr acia_init
   cli
 
 loop:
@@ -32,12 +30,17 @@ loop:
   cmp kb_wptr
   cli
   bne key_pressed
+  jsr MONRDKEY
+  bcc .no_key_pressed
+  jsr lcd_print_char
+.no_key_pressed:
   jmp loop
 
 key_pressed:
   ldx kb_rptr
   lda kb_buffer,x
   jsr lcd_print_char
+  jsr acia_write
   inc kb_rptr
   jmp loop
 
@@ -49,7 +52,7 @@ irq:
   jsr kb_handle
   rti
 
-  .org $fffa
+  .org $FFFA
   .word nmi
   .word reset
   .word irq

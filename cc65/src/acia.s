@@ -4,7 +4,7 @@ ACIA_TX_RX_DATA = ACIA_BASE + $0
 ACIA_STATUS = ACIA_BASE + $1
 ACIA_RESET = ACIA_BASE + $1
 ACIA_COMMAND = ACIA_BASE + $2
-ACIA_CONTROL: = ACIA_BASE + $3
+ACIA_CONTROL = ACIA_BASE + $3
 
 ; ACIA Status Register
 ACIA_INT_ENABLE       = %10000000
@@ -93,16 +93,9 @@ acia_init:
 
 
 acia_write:
-MONCOUT:
-;   ldx #0
-; .next_char
-;   lda acia_text,x
-;   beq acia_read
   sta ACIA_TX_RX_DATA
-  ; inx
   jsr delay_6551
   rts
-  ; jmp .next_char
 
 ; reads byte into A register and blocks until byte is available
 acia_read:
@@ -114,27 +107,16 @@ acia_read:
 
 ; checks for byte and loads into A register. Carry set if byte is available, cleard if no byte
 acia_check:
-MONRDKEY:
 	lda	ACIA_STATUS
 	and	#ACIA_RX_DR_FULL
-	beq	NoDataIn
+	beq	acia_check_no_data
 	lda	ACIA_TX_RX_DATA
 	sec		; Carry set if key available
 	rts
-NoDataIn:
+acia_check_no_data:
 	clc		; Carry clear if no key pressed
 	rts
 
-MONISCNTC:
-	jsr	MONRDKEY
-	bcc	NotCTRLC ; If no key pressed then exit
-	cmp	#3
-	bne	NotCTRLC ; if CTRL-C not pressed then exit
-	sec		; Carry set if control C pressed
-	rts
-NotCTRLC:
-	clc		; Carry clear if control C not pressed
-	rts
 
 ; Latest WDC 65C51 has a bug - Xmit bit in status register is stuck on
 ; IRQ driven transmit is not possible as a result - interrupts are endlessly triggered
@@ -147,20 +129,17 @@ NotCTRLC:
 delay_6551:
   phy      ;Save Y Reg
   phx      ;Save X Reg
-.delay_loop:
   ; ldy   #2    ;Get delay value (clock rate in MHz 2 clock cycles)
   ldy   #1    ;Get delay value (clock rate in MHz 1 clock cycles)
 
-.mini_delay:
-  ldx   #$11      ;Seed X reg
-.delay_1:
+delay_clock_multiplier_loop:
+  ldx   #$11      ;Seed X reg, $11 works for 115200 baud, $68 for 19200
+delay_baud_loop:
   dex         ;Decrement low index
-  bne   .delay_1   ;Loop back until done
+  bne   delay_baud_loop   ;Loop back until done
   dey         ;Decrease by one
-  bne   .mini_delay   ;Loop until done
+  bne   delay_clock_multiplier_loop   ;Loop until done
   plx         ;Restore X Reg
   ply         ;Restore Y Reg
-.delay_done:
+delay_done:
   rts         ;Delay done, return
-
-acia_text: .byte "Hello, Sam!", $0D, $0A, $00

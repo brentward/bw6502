@@ -1,0 +1,36 @@
+Modules list:
+-------------
+bw6502.o:
+    CODE              Offs=000000  Size=003CCD  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+ZEROPAGE              000000  000000  000000  00001
+CODE                  008000  00BCCC  003CCD  00001
+NULL                  008000  008000  000000  00001
+BSS                   00BCCD  00BCCD  000000  00001
+DATA                  00BCCD  00BCCD  000000  00001
+RODATA                00BCCD  00BCCD  000000  00001
+
+
+Exports list by name:
+---------------------
+
+
+
+Exports list by value:
+----------------------
+
+
+
+Imports list:
+-------------
+
