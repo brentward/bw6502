@@ -1,18 +1,45 @@
-; in_buffer = $0400   ; 256 bytes 0x0400-0x04FF
+in_buffer = $0400   ; 256 bytes 0x0400-0x04FF
 
-; io_init:
+io_init:
+    stz in_tail
+    stz in_head
+    stz in_cnt
+    rts
 ; 	stz in_wptr
 ; 	stz in_rptr
 ; 	rts
 
-; buf_write:  
+buf_write:  
+    ldy in_cnt
+    bmi bufful
+    ldy in_tail
+    sta in_buffer,y
+    inc in_tail
+    inc in_cnt
+bufful:
+    rts
+
+
 ; 	ldx  in_wptr        ; Start with A containing the byte to put in the buffer.
 ; 	sta  in_buffer,x    ; Get the pointer value and store the data where it says,
 ; 	inc  in_wptr        ; then increment the pointer for the next write.
 ; 	rts
 ;  ;-------------
 
-; buf_read: 
+buf_read: 
+    clc
+    lda in_cnt
+    bne get_ch
+    rts
+get_ch:
+    phy
+    ldy in_head
+    lda in_buffer,y
+    inc in_head
+    dec in_cnt
+    ply
+    sec
+    rts
 ; 	ldx  in_rptr        ; Ends with a containing the byte just read from buffer.
 ; 	lda  in_buffer,x    ; Eet the pointer value and read the data it points to.
 ; 	inc  in_rptr        ; Then increment the pointer for the next read.
@@ -96,49 +123,49 @@
 ; now transmit is IRQ driven and buffered
 ;   the output buffer is fixed at 128 bytes, so buffer management is added
 ;
-CHOUT         PHY ;save Y reg
-OUTCH         LDY OCNT ;get character output count in buffer
-               BMI   OUTCH   ;check against limit, loop back if full
-;
-               PHP   ;Save IRQ state
-               SEI ;Disable irq
-               LDY OTAIL ;Get index to next spot
-               STA OBUF,Y ;and place in buffer
-               INY ;Increment index
-               BPL   OUTC1   ;Check for wrap-around ($80), branch if not
-               LDY #$00 ;Yes, zero pointer
-;
-OUTC1         STY OTAIL ;Update pointer
-               INC OCNT ;Increment character count
-               BIT OIE ;Is xmit on?
-               BMI OUTC2 ;Yes, operation done
-;
-               LDY   #$05   ;Get mask for xmit on
-               STY SIOCOM ;Turn on xmit irq
-               DEC OIE ;Update flag
-;
-OUTC2         PLP   ;Restore IRQ flag
-               PLY   ;Restore Y reg
-               RTS ;Return
-;
-;CHIN subroutine: Wait for a keystroke from input buffer, return with keystroke in A Reg
-;   new routine to work with the new IRQ service routine for the 6551
-;   the input buffer is fixed at 128 bytes, so buffer management is replaced
-;
-CHIN         LDA   ICNT   ;Get character count
-               BEQ   CHIN   ;If zero (no character, loop back)
-;
-               PHY   ;Save Y reg
-               PHP   ;Save CPU flag set
-               SEI   ;Disable IRQ to work with buffer pointers
-               LDY   IHEAD   ;Get the buffer head pointer
-               LDA   IBUF,Y   ;Get the character from the buffer
-               INY   ;Increment the buffer index
-               BPL   CHIN1   ;Check for wraparound ($80), branch if not
-               LDY   #$00   ;Reset the buffer pointer
-CHIN1         STY   IHEAD   ;Update buffer pointer
-               DEC   ICNT   ;Decrement the buffer count
-               PLP   ;Restore previous CPU flags (IRQ)
-               PLY   ;Restore Y Reg
-               RTS   ;Return to caller with character in A reg
-;
+; CHOUT         PHY ;save Y reg
+; OUTCH         LDY OCNT ;get character output count in buffer
+;                BMI   OUTCH   ;check against limit, loop back if full
+; ;
+;                PHP   ;Save IRQ state
+;                SEI ;Disable irq
+;                LDY OTAIL ;Get index to next spot
+;                STA OBUF,Y ;and place in buffer
+;                INY ;Increment index
+;                BPL   OUTC1   ;Check for wrap-around ($80), branch if not
+;                LDY #$00 ;Yes, zero pointer
+; ;
+; OUTC1         STY OTAIL ;Update pointer
+;                INC OCNT ;Increment character count
+;                BIT OIE ;Is xmit on?
+;                BMI OUTC2 ;Yes, operation done
+; ;
+;                LDY   #$05   ;Get mask for xmit on
+;                STY SIOCOM ;Turn on xmit irq
+;                DEC OIE ;Update flag
+; ;
+; OUTC2         PLP   ;Restore IRQ flag
+;                PLY   ;Restore Y reg
+;                RTS ;Return
+; ;
+; ;CHIN subroutine: Wait for a keystroke from input buffer, return with keystroke in A Reg
+; ;   new routine to work with the new IRQ service routine for the 6551
+; ;   the input buffer is fixed at 128 bytes, so buffer management is replaced
+; ;
+; CHIN         LDA   ICNT   ;Get character count
+;                BEQ   CHIN   ;If zero (no character, loop back)
+; ;
+;                PHY   ;Save Y reg
+;                PHP   ;Save CPU flag set
+;                SEI   ;Disable IRQ to work with buffer pointers
+;                LDY   IHEAD   ;Get the buffer head pointer
+;                LDA   IBUF,Y   ;Get the character from the buffer
+;                INY   ;Increment the buffer index
+;                BPL   CHIN1   ;Check for wraparound ($80), branch if not
+;                LDY   #$00   ;Reset the buffer pointer
+; CHIN1         STY   IHEAD   ;Update buffer pointer
+;                DEC   ICNT   ;Decrement the buffer count
+;                PLP   ;Restore previous CPU flags (IRQ)
+;                PLY   ;Restore Y Reg
+;                RTS   ;Return to caller with character in A reg
+; ;

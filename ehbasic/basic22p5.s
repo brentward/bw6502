@@ -350,8 +350,8 @@ ZPLastByte      = Decss+17   ; last declared byte in Page Zero
 ; Note: C02BIOS uses Page Zero locations from $E0 - $FF
 ; C02Monitor uses Page Zero locations from $B0 - $DF
 lcd_addr		= $E2	; 1 byte, lcd busy flag and address
-in_wptr			= $E3	; 1 byte
-in_rptr			= $E4	; 1 byte
+in_cnt			= $E3	; 1 byte
+in_tail			= $E4	; 1 byte
 kb_flags		= $E5	; 1 byte
 kb_modifiers 	= $E6	; 1 byte
 r0				= $E8	; 2 bytes
@@ -363,12 +363,12 @@ r1H				= $EB	; high byte
 r2				= $EC	; 2 bytes
 r2L				= $EC	; low byte
 r2H				= $ED	; high byte
-ICNT                    = $EE ;Input buffer count
-IHEAD			      = $EF	;input buffer head pointer
-ITAIL			      = $F0	;input buffer tail pointer
-OCNT			      = $F1	;output buffer count
-OHEAD			      = $F2	;output buffer head pointer
-OTAIL			      = $F4	;output buffer tail pointer
+in_head			= $EE		; unused
+; IHEAD			      = $EF	;input buffer head pointer
+; ITAIL			      = $F0	;input buffer tail pointer
+; OCNT			      = $F1	;output buffer count
+; OHEAD			      = $F2	;output buffer head pointer
+; OTAIL			      = $F4	;output buffer tail pointer
 
 ; add page zero variables for Xmodem transfer using the C02 Monitor routines
 

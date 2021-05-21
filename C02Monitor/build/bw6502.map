@@ -11,7 +11,7 @@ bw6502.o:
     BIOS              Offs=000000  Size=0001EB  Align=00001  Fill=0000
     TOP               Offs=000000  Size=0000F9  Align=00001  Fill=0000
     VECTORS           Offs=000000  Size=000006  Align=00001  Fill=0000
-    MONITOR           Offs=000000  Size=00108B  Align=00001  Fill=0000
+    MONITOR           Offs=000000  Size=00108D  Align=00001  Fill=0000
 
 
 Segment list:
@@ -25,7 +25,7 @@ DATA                  008000  008000  000000  00001
 NULL                  008000  008000  000000  00001
 RODATA                008000  008000  000000  00001
 BASIC                 00B000  00D721  002722  00001
-MONITOR               00E000  00F08A  00108B  00001
+MONITOR               00E000  00F08C  00108D  00001
 BIOS                  00F800  00F9EA  0001EB  00001
 TOP                   00FF00  00FFF8  0000F9  00001
 VECTORS               00FFFA  00FFFF  000006  00001
@@ -37,7 +37,7 @@ __BASIC_LOAD__            00B000  LA    __BASIC_RUN__             00B000  LA
 __BASIC_SIZE__            002722  EA    __BIOS_LOAD__             00F800  LA    
 __BIOS_RUN__              00F800  LA    __BIOS_SIZE__             0001EB  EA    
 __MONITOR_LOAD__          00E000  LA    __MONITOR_RUN__           00E000  LA    
-__MONITOR_SIZE__          00108B  EA    __TOP_LOAD__              00FF00  LA    
+__MONITOR_SIZE__          00108D  EA    __TOP_LOAD__              00FF00  LA    
 __TOP_RUN__               00FF00  LA    __TOP_SIZE__              0000F9  EA    
 __VECTORS_LOAD__          00FFFA  LA    __VECTORS_RUN__           00FFFA  LA    
 __VECTORS_SIZE__          000006  EA    
@@ -46,7 +46,7 @@ __VECTORS_SIZE__          000006  EA
 Exports list by value:
 ----------------------
 __VECTORS_SIZE__          000006  EA    __TOP_SIZE__              0000F9  EA    
-__BIOS_SIZE__             0001EB  EA    __MONITOR_SIZE__          00108B  EA    
+__BIOS_SIZE__             0001EB  EA    __MONITOR_SIZE__          00108D  EA    
 __BASIC_SIZE__            002722  EA    __BASIC_LOAD__            00B000  LA    
 __BASIC_RUN__             00B000  LA    __MONITOR_RUN__           00E000  LA    
 __MONITOR_LOAD__          00E000  LA    __BIOS_LOAD__             00F800  LA    

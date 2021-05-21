@@ -1,3 +1,4 @@
+.segment "BIOS"
 RELEASE   = %00000001
 EXTENDED  = %00000010
 CAPS_LOCK = %10000000
@@ -12,25 +13,23 @@ L_GUI       = %01000000
 R_GUI       = %10000000
 
 kb_init:
-  stz kb_flags
-  stz kb_modifiers
+  stz KBflags
+  stz KBmods
   rts
 
 kb_handle:
-  phx
-
-  lda kb_flags
+  lda KBflags
   and #EXTENDED
   bne read_byte_extended
 
-  lda kb_flags
+  lda KBflags
   and #RELEASE
   beq read_key
 
-  lda kb_flags
+  lda KBflags
   eor #RELEASE
-  sta kb_flags
-  lda VIA1_PORTA
+  sta KBflags
+  lda Via1PRA
   cmp #$12
   beq l_shfit_up
   cmp #$59
@@ -38,30 +37,30 @@ kb_handle:
   jmp kb_handle_return
 
 read_byte_extended
-  lda kb_flags
+  lda KBflags
   eor #EXTENDED
-  sta kb_flags
+  sta KBflags
   and #RELEASE
   beq read_key_extended
-  lda kb_flags
+  lda KBflags
   eor #RELEASE
-  sta kb_flags
-  lda VIA1_PORTA
+  sta KBflags
+  lda Via1PRA
   jmp kb_handle_return
 
 l_shfit_up:
-  lda kb_modifiers
+  lda KBmods
   eor #L_SHIFT
-  sta kb_modifiers
+  sta KBmods
   jmp kb_handle_return
 r_shfit_up:
-  lda kb_modifiers
+  lda KBmods
   eor #R_SHIFT
-  sta kb_modifiers
+  sta KBmods
   jmp kb_handle_return
 
 read_key:
-  lda VIA1_PORTA
+  lda Via1PRA
   cmp #$F0
   beq key_released
   cmp #$E0
@@ -80,13 +79,13 @@ read_key:
   ; beq enter_down
 
   tax
-  lda kb_modifiers
+  lda KBmods
   and #L_SHIFT
   bne shifted_key
-  lda kb_modifiers
+  lda KBmods
   and #R_SHIFT
   bne shifted_key
-  lda kb_flags
+  lda KBflags
   and #CAPS_LOCK
   bne caps_lock_key
 
@@ -101,19 +100,30 @@ shifted_key:
   lda keymap_shifted,x
 
 push_key:
-  ldx in_wptr
-  sta in_buffer,x
-  inc in_wptr
-  jmp kb_handle_return
+			    LDY ICNT	;get buffer counter (3)
+					BMI	DISABLE_TRANSMIT	;check against limit, branch if full (2/3)
+;
+					LDY ITAIL ;room in buffer (3)
+					STA IBUF,Y ;store into buffer (5)
+					INC	ITAIL	;Increment tail pointer (5)
+					RMB7	ITAIL	;Strip off bit 7, 128 bytes only (5)
+					INC ICNT ;increment character count (5)
+          jmp kb_handle_return
+;	
+DISABLE_TRANSMIT:
+          LDA #%00001100 ;buffer overflow flag (2)
+          STA STTVAL
+          jmp kb_handle_return
+
 
 key_released:
-  lda kb_flags
+  lda KBflags
   ora #RELEASE
-  sta kb_flags
+  sta KBflags
   jmp kb_handle_return
 
 read_key_extended:
-  lda VIA1_PORTA
+  lda Via1PRA
   cmp #$F0
   beq key_released
   cmp #$6B
@@ -125,27 +135,27 @@ read_key_extended:
   jmp kb_handle_return
 
 extended:
-  lda kb_flags
+  lda KBflags
   ora #EXTENDED
-  sta kb_flags
+  sta KBflags
   jmp kb_handle_return
 
 l_shift_down:
-  lda kb_modifiers
+  lda KBmods
   ora #L_SHIFT
-  sta kb_modifiers
+  sta KBmods
   jmp kb_handle_return
 
 r_shift_down:
-  lda kb_modifiers
+  lda KBmods
   ora #R_SHIFT
-  sta kb_modifiers
+  sta KBmods
   jmp kb_handle_return
 
 caps_lock_down:
-  lda kb_flags
+  lda KBflags
   eor #CAPS_LOCK
-  sta kb_flags
+  sta KBflags
   jmp kb_handle_return
   
 ; esc_down:
@@ -184,11 +194,11 @@ caps_lock_key:
   jmp push_key
 
 left_down:
-  jsr lcd_screen_right
+  ; jsr lcd_screen_right
   jmp kb_handle_return
 
 right_down:
-  jsr lcd_screen_left
+  ; jsr lcd_screen_left
   jmp kb_handle_return
 
 del_down:
@@ -196,7 +206,6 @@ del_down:
   jmp push_key
 
 kb_handle_return:
-  plx
   rts
 
 .align 256

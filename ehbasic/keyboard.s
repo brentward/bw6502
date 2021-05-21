@@ -101,9 +101,10 @@ shifted_key:
   lda keymap_shifted,x
 
 push_key:
-  ldx in_wptr
-  sta in_buffer,x
-  inc in_wptr
+  ; ldx in_wptr
+  ; sta in_buffer,x
+  ; inc in_wptr
+  jsr buf_write
   jmp kb_handle_return
 
 key_released:

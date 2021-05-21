@@ -8,7 +8,7 @@
 	.include "via.s"
 	.include "lcd.s"
 	.include "utils.s"
-	; .include "keyboard.s"
+	.include "keyboard.s"
 	.include "serialio.s"
 
 ; ; Defines
@@ -115,8 +115,18 @@ CHROUT
 ; Byte in from serial console or keyboard
 
 CHRIN_NW
-	jsr acia_read
+	; jsr acia_read
+	; rts
+	lda in_cnt
+	jsr buf_read
+	cmp #$E0				; if it is over 224
+	bcs buf_full			; leave the sending end turned off
+	jsr acia_resume_rx
+buf_full:
+	jsr buf_read
 	rts
+
+
 ; 	jsr buf_dif				; get bytes to read
 ; 	beq NoDataIn			; If 0 branch to NoDataIn
 ; 	ldx in_rptr				; load the read pointer into X
@@ -154,37 +164,37 @@ SAVE				        ; save vector for EhBASIC
 
 ; EhBASIC IRQ support
 
-; IRQ
-; ; 	pha				; save A
-; ;     lda		ACIA_STATUS             ; Check if ACIA wants service   
-; ;     bpl		no_acia_int                ; bit 7 not set, so no
-; ;     jsr		acia_handle          ; service ACIA
-; ; no_acia_int
-; ; ; 	lda		VIA1_IFR
-; ; ; 	bpl		no_via1_int
-; ; ; 	jsr		kb_handle
-; ; ; no_via1_int
-; ; 	PLA				; restore A
-; 	RTI
+IRQ
+	pha				; save A
+    lda		ACIA_STATUS             ; Check if ACIA wants service   
+    bpl		no_acia_int                ; bit 7 not set, so no
+    jsr		acia_handle          ; service ACIA
+no_acia_int
+	lda		VIA1_IFR
+	bpl		no_via1_int
+	jsr		kb_handle
+no_via1_int
+	PLA				; restore A
+	RTI
 irq_handle:
 		
-IRQ_VECTOR   ;This is the ROM start for the BRK/IRQ handler
-		PHA   ;Save A Reg (3)
-		PHX   ;Save X Reg (3)
-		PHY   ;Save Y Reg (3)
-		TSX   ;Get Stack pointer (2)
-		LDA   $0100+4,X   ;Get Status Register (4)
-		AND   #$10   ;Mask for BRK bit set (2)
-		BEQ   DO_IRQ   ;If not set, handle IRQ (2/3)
-		JMP   (BRKVEC)   ;Jump to Soft vectored BRK Handler (5) (24 clock cycles to vector routine)
-DO_IRQ
-		JMP   (IRQVEC)   ;Jump to Soft vectored IRQ Handler (5) (25 clock cycles to vector routine)
-;
-IRQ_EXIT      ;This is the standard return for the IRQ/BRK handler routines
-		PLY   ;Restore Y Reg (4)
-		PLX   ;Restore X Reg (4)
-		PLA   ;Restore A Reg (4)
-		RTI   ;Return from IRQ/BRK routine (6) (18 clock cycles from vector jump to IRQ end)
+; IRQ_VECTOR   ;This is the ROM start for the BRK/IRQ handler
+; 		PHA   ;Save A Reg (3)
+; 		PHX   ;Save X Reg (3)
+; 		PHY   ;Save Y Reg (3)
+; 		TSX   ;Get Stack pointer (2)
+; 		LDA   $0100+4,X   ;Get Status Register (4)
+; 		AND   #$10   ;Mask for BRK bit set (2)
+; 		BEQ   DO_IRQ   ;If not set, handle IRQ (2/3)
+; 		JMP   (BRKVEC)   ;Jump to Soft vectored BRK Handler (5) (24 clock cycles to vector routine)
+; DO_IRQ
+; 		JMP   (IRQVEC)   ;Jump to Soft vectored IRQ Handler (5) (25 clock cycles to vector routine)
+; ;
+; IRQ_EXIT      ;This is the standard return for the IRQ/BRK handler routines
+; 		PLY   ;Restore Y Reg (4)
+; 		PLX   ;Restore X Reg (4)
+; 		PLA   ;Restore A Reg (4)
+; 		RTI   ;Return from IRQ/BRK routine (6) (18 clock cycles from vector jump to IRQ end)
 
 ; EhBASIC NMI support
 

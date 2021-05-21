@@ -453,6 +453,10 @@ INTERUPT1	LDA	Via1IFR	;Get IRQ flag register, xfer irq bit to n flag (4)
 					BNE	DECMSD	;If active, handle T2 timer (MS delay) (2/3)
 					BIT #%01000000	;check T1 interrupt bit (2)
 					BNE	INCRTC	;If active, handle T1 timer (RTC) (2/3)
+; 					BIT #%00000010	;check CA1 interrupt bit (2)
+; 					BEQ NO_KBD
+; 					JSR kb_handle
+; NO_KBD
 					STA	STVVAL	;Save in status before exit (3)
 					BRA REGEXT1	;branch to next IRQ source, exit (3)
 ;
@@ -540,7 +544,8 @@ INIT_6522L
 					DEX	;Decrement to next parameter (2)
 					BNE	INIT_6522L	;Branch back till all are loaded (2/3)
 					CLI	;Re-enable IRQ (2)
-INIT_KBD
+; INIT_KBD
+; 					JSR kb_init
 
 RET				RTS	;Return to caller (6)
 ;

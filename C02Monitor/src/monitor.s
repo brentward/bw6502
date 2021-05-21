@@ -54,7 +54,9 @@
 	.include "zeropage.s"
 	.include "basic.s"
 	.include "bios.s"
+	; .include "keyboard.s"
 	.include "top.s"
+
 ;******************************************************************************
 ;******************************************************************************
 ;Character input buffer address: $0300-$037F - 128 bytes
@@ -2039,7 +2041,7 @@ MSG_2E		.BYTE	$0D,$0A
 					.BYTE	"Loops: "
 					.BYTE	$00
 MSG_2F  .BYTE     $0D,$0A
-        .BYTE     "65C02 Enhanced BASIC Version 2.22p4C"
+        .BYTE     "65C02 Enhanced BASIC Version 2.22p5C02"
         .BYTE     $0D,$0A
         .BYTE     " [C]old/[W]arm start?"
         .BYTE     $00
