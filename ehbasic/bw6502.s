@@ -46,8 +46,8 @@ RES_vec
 	jsr		via_init
 	jsr		lcd_init
 	jsr		acia_init
-	; jsr io_init
-	; jsr		kb_init
+	jsr		io_init
+	jsr		kb_init
 	cli
 
 	ldx		#0
@@ -118,8 +118,8 @@ CHRIN_NW
 	; jsr acia_read
 	; rts
 	lda in_cnt
-	jsr buf_read
-	cmp #$E0				; if it is over 224
+	; jsr buf_read
+	cmp #$60				; if it is over 96
 	bcs buf_full			; leave the sending end turned off
 	jsr acia_resume_rx
 buf_full:

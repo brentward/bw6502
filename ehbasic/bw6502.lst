@@ -7670,10 +7670,10 @@ Current file: bw6502.s
 00A04F  2  00                 .byte $00               ; ctrl-c byte timeout - GET needs this
 00A050  2  1A 9E              .word CTRLC             ; ctrl-c check vector
 00A052  2               ;
-00A052  2  5C AD              .word B_CHRIN_NW        ; byte in from C02BIOS (no waiting)
-00A054  2  58 AD              .word B_CHROUT          ; byte out from C02BIOS
-00A056  2  6C AD              .word M_LOAD            ; Xmodem LOAD for C02 Monitor
-00A058  2  6D AD              .word M_SAVE            ; Xmodem SAVE for C02 Monitor
+00A052  2  62 AD              .word B_CHRIN_NW        ; byte in from C02BIOS (no waiting)
+00A054  2  5E AD              .word B_CHROUT          ; byte out from C02BIOS
+00A056  2  6F AD              .word M_LOAD            ; Xmodem LOAD for C02 Monitor
+00A058  2  70 AD              .word M_SAVE            ; Xmodem SAVE for C02 Monitor
 00A05A  2  28 AD              .word M_EXIT            ; Warm start for C02 Monitor
 00A05C  2               
 00A05C  2               PG4_TABE
@@ -7708,14 +7708,14 @@ Current file: bw6502.s
 00A070  2               PROMPT2
 00A070  2  B2 C6              LDA   (PROMPTL)            ; Get string data
 00A072  2  F0 0B              BEQ   EHB_TRY2             ; If null character, branch to user entry
-00A074  2  20 58 AD           JSR   B_CHROUT             ; Send character to terminal
+00A074  2  20 5E AD           JSR   B_CHROUT             ; Send character to terminal
 00A077  2  E6 C6              INC   PROMPTL              ; Increment low byte index
 00A079  2  D0 F5              BNE   PROMPT2              ; Loop back for next character
 00A07B  2  E6 C7              INC   PROMPTH              ; Increment high byte index
 00A07D  2  80 F1              BRA   PROMPT2              ; Loop back and continue printing
 00A07F  2               
 00A07F  2               EHB_TRY2
-00A07F  2  20 5C AD           JSR   B_CHRIN_NW           ; Request keystroke input from terminal
+00A07F  2  20 62 AD           JSR   B_CHRIN_NW           ; Request keystroke input from terminal
 00A082  2  90 FB              BCC   EHB_TRY2             ; If carry clear, nothing entered, loop back
 00A084  2  C9 61              CMP   #$61                 ; Check for lower case value range
 00A086  2  90 02              BCC   UCOK                 ; Branch if < $61, control code/upper-case/numeric
@@ -7726,7 +7726,7 @@ Current file: bw6502.s
 00A08E  2  C9 57              CMP   #'W'                 ; Check for Warm start
 00A090  2  F0 07              BEQ   EHB_WARM             ; If yes, go Warm start
 00A092  2  A9 07              LDA   #$07                 ; Get bell character
-00A094  2  20 58 AD           JSR   B_CHROUT             ; Else, beep for entry error
+00A094  2  20 5E AD           JSR   B_CHROUT             ; Else, beep for entry error
 00A097  2  80 E6              BRA   EHB_TRY2             ; Branch back and try again
 00A099  2               
 00A099  2               EHB_WARM
@@ -8733,8 +8733,8 @@ Current file: bw6502.s
 00A792  2  A9 10        	lda		#(ACIA_1_SBN | ACIA_WL_8 | ACIA_RX_CLK_B_RATE | ACIA_BAUD_115200)
 00A794  2  8D 23 02     	sta		ACIA_CONTROL
 00A797  2               
-00A797  2  A9 0B        	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_NO_IRQ | ACIA_DTR)
-00A799  2               	; lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_IRQ | ACIA_DTR)
+00A797  2               	; lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_NO_IRQ | ACIA_DTR)
+00A797  2  A9 09        	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_IRQ | ACIA_DTR)
 00A799  2  8D 22 02     	sta		ACIA_COMMAND
 00A79C  2  68           	pla
 00A79D  2  60           	rts
@@ -8783,7 +8783,7 @@ Current file: bw6502.s
 00A7CF  2  20 07 AD     	jsr		buf_write		; and store it in the buffer.
 00A7D2  2               
 00A7D2  2  A5 E3        	lda		in_cnt			; Now see how full the buffer is.
-00A7D4  2  C9 F0        	cmp		#$F0			; If it has less than 240 bytes unread,
+00A7D4  2  C9 70        	cmp		#$70			; If it has less than 12 bytes unread,
 00A7D6  2  90 0D        	bcc		@end			; just exit the ISR here.
 00A7D8  2               
 00A7D8  2  A9 01        	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_H | ACIA_RX_IRQ | ACIA_DTR)	; Else, tell the other end to stop sending data before
@@ -9711,184 +9711,184 @@ Current file: bw6502.s
 00AD2C  1  20 F6 A7     	jsr		via_init
 00AD2F  1  20 0B A8     	jsr		lcd_init
 00AD32  1  20 8E A7     	jsr		acia_init
-00AD35  1               	; jsr io_init
-00AD35  1               	; jsr		kb_init
-00AD35  1  58           	cli
-00AD36  1               
-00AD36  1  A2 00        	ldx		#0
-00AD38  1               PrintWelcome
-00AD38  1  BD 82 AD     	lda		WELCOME_mess,x
-00AD3B  1  F0 07        	beq		print_next
-00AD3D  1  20 CF A8     	jsr		lcd_print_char
-00AD40  1  E8           	inx
-00AD41  1  4C 38 AD     	jmp		PrintWelcome
-00AD44  1               print_next
-00AD44  1  20 FB A8     	jsr		lcd_new_line
-00AD47  1  A2 00        	ldx		#0
-00AD49  1               PrintBASIC
-00AD49  1  BD 93 AD     	lda		BASIC_mess,x
-00AD4C  1  F0 07        	beq		PrintDone
-00AD4E  1  20 CF A8     	jsr		lcd_print_char
-00AD51  1  E8           	inx
-00AD52  1  4C 49 AD     	jmp		PrintBASIC
-00AD55  1               PrintDone
-00AD55  1               
-00AD55  1  4C 00 80     	jmp		ROM_START
-00AD58  1               
-00AD58  1               ; ; Set up vectors and interrupt code, copy them to page 2.
-00AD58  1               
-00AD58  1               ; 	LDY	#END_CODE-LAB_vec	; set index/count
-00AD58  1               ; LAB_stlp
-00AD58  1               ; 	LDA	LAB_vec-1,Y		; get byte from interrupt code
-00AD58  1               ; 	STA	VEC_IN-1,Y		; save to RAM
-00AD58  1               ; 	DEY				; decrement index/count
-00AD58  1               ; 	BNE	LAB_stlp		; loop if more to do
-00AD58  1               
-00AD58  1               ; ; Now do the signon message, Y = $00 here
-00AD58  1               
-00AD58  1               ; LAB_signon
-00AD58  1               ; 	LDA	LAB_mess,Y		; get byte from sign on message
-00AD58  1               ; 	BEQ	LAB_nokey		; exit loop if done
-00AD58  1               
-00AD58  1               ; 	JSR	V_OUTP		        ; output character
-00AD58  1               ; 	INY				; increment index
-00AD58  1               ; 	BNE	LAB_signon		; loop, branch always
-00AD58  1               
-00AD58  1               ; LAB_nokey
-00AD58  1               ; 	JSR	V_INPT                  ; call scan input device
-00AD58  1               ; 	BCC	LAB_nokey		; loop if no key
-00AD58  1               
-00AD58  1               ; 	AND	#$DF			; mask xx0x xxxx, ensure upper case
-00AD58  1               
-00AD58  1               ; 	CMP	#'W'			; compare with [W]arm start
-00AD58  1               ; 	BEQ	LAB_dowarm		; branch if [W]arm start
-00AD58  1               
-00AD58  1               ; 	CMP	#'C'			; compare with [C]old start
-00AD58  1               ; 	BNE	RES_vec		        ; loop if not [C]old start
-00AD58  1               
-00AD58  1               ; 	JMP	LAB_COLD		; do EhBASIC cold start
-00AD58  1               
-00AD58  1               ; LAB_dowarm
-00AD58  1               ; 	JMP	LAB_WARM		; do EhBASIC warm start
-00AD58  1               
-00AD58  1               ; Byte out to serial console
-00AD58  1               
-00AD58  1               CHROUT
-00AD58  1  20 A4 A7     	jsr acia_write
-00AD5B  1  60           	rts
-00AD5C  1               
-00AD5C  1               ; Byte in from serial console or keyboard
-00AD5C  1               
-00AD5C  1               CHRIN_NW
-00AD5C  1               	; jsr acia_read
-00AD5C  1               	; rts
-00AD5C  1  A5 E3        	lda in_cnt
-00AD5E  1  20 15 AD     	jsr buf_read
-00AD61  1  C9 E0        	cmp #$E0				; if it is over 224
-00AD63  1  B0 03        	bcs buf_full			; leave the sending end turned off
-00AD65  1  20 9E A7     	jsr acia_resume_rx
-00AD68  1               buf_full:
-00AD68  1  20 15 AD     	jsr buf_read
-00AD6B  1  60           	rts
-00AD6C  1               
-00AD6C  1               
-00AD6C  1               ; 	jsr buf_dif				; get bytes to read
-00AD6C  1               ; 	beq NoDataIn			; If 0 branch to NoDataIn
-00AD6C  1               ; 	ldx in_rptr				; load the read pointer into X
-00AD6C  1               ; 	lda in_buffer,x			; and read the byte from the buffer
-00AD6C  1               ; 	pha						; them save it to the stack
-00AD6C  1               ; 	inc in_rptr				; increment the read pointer
-00AD6C  1               ; 	jsr buf_dif				; get bytes to read still
-00AD6C  1               ; 	cmp #$E0				; if it is over 224
-00AD6C  1               ; 	bcs buf_full			; leave the sending end turned off
-00AD6C  1               ; 	jsr acia_resume_rx		; otherwise set RTSB low to request RX
-00AD6C  1               ; buf_full:
-00AD6C  1               ; 	pla						; pull the byte from the stack
-00AD6C  1               ; 	sec						; Set carry if byte received
-00AD6C  1               ; 	rts
-00AD6C  1               ; NoDataIn:
-00AD6C  1               ; 	clc		                ; Carry clear no byte received pressed
-00AD6C  1               ; 	rts
-00AD6C  1               
-00AD6C  1               
-00AD6C  1               ; LOAD - currently does nothing.
-00AD6C  1               LOAD				        ; load vector for EhBASIC
-00AD6C  1  60           	RTS
-00AD6D  1               
-00AD6D  1               ; SAVE - currently does nothing.
-00AD6D  1               SAVE				        ; save vector for EhBASIC
-00AD6D  1  60           	RTS
-00AD6E  1               
-00AD6E  1               ; vector tables
-00AD6E  1               
-00AD6E  1               ; LAB_vec
-00AD6E  1               ; 	.word	KBDin                   ; byte in from keyboard
-00AD6E  1               ; 	.word	SCRNout		        ; byte out to screen
-00AD6E  1               ; 	.word	SBCload		        ; load vector for EhBASIC
-00AD6E  1               ; 	.word	SBCsave		        ; save vector for EhBASIC
-00AD6E  1               
-00AD6E  1               ; EhBASIC IRQ support
-00AD6E  1               
-00AD6E  1               IRQ
-00AD6E  1  48           	pha				; save A
-00AD6F  1  AD 21 02         lda		ACIA_STATUS             ; Check if ACIA wants service
-00AD72  1  10 03            bpl		no_acia_int                ; bit 7 not set, so no
-00AD74  1  20 C4 A7         jsr		acia_handle          ; service ACIA
-00AD77  1               no_acia_int
-00AD77  1  AD 0D 02     	lda		VIA1_IFR
-00AD7A  1  10 03        	bpl		no_via1_int
-00AD7C  1  20 3C A9     	jsr		kb_handle
-00AD7F  1               no_via1_int
-00AD7F  1  68           	PLA				; restore A
-00AD80  1  40           	RTI
-00AD81  1               irq_handle:
-00AD81  1               
-00AD81  1               ; IRQ_VECTOR   ;This is the ROM start for the BRK/IRQ handler
-00AD81  1               ; 		PHA   ;Save A Reg (3)
-00AD81  1               ; 		PHX   ;Save X Reg (3)
-00AD81  1               ; 		PHY   ;Save Y Reg (3)
-00AD81  1               ; 		TSX   ;Get Stack pointer (2)
-00AD81  1               ; 		LDA   $0100+4,X   ;Get Status Register (4)
-00AD81  1               ; 		AND   #$10   ;Mask for BRK bit set (2)
-00AD81  1               ; 		BEQ   DO_IRQ   ;If not set, handle IRQ (2/3)
-00AD81  1               ; 		JMP   (BRKVEC)   ;Jump to Soft vectored BRK Handler (5) (24 clock cycles to vector routine)
-00AD81  1               ; DO_IRQ
-00AD81  1               ; 		JMP   (IRQVEC)   ;Jump to Soft vectored IRQ Handler (5) (25 clock cycles to vector routine)
-00AD81  1               ; ;
-00AD81  1               ; IRQ_EXIT      ;This is the standard return for the IRQ/BRK handler routines
-00AD81  1               ; 		PLY   ;Restore Y Reg (4)
-00AD81  1               ; 		PLX   ;Restore X Reg (4)
-00AD81  1               ; 		PLA   ;Restore A Reg (4)
-00AD81  1               ; 		RTI   ;Return from IRQ/BRK routine (6) (18 clock cycles from vector jump to IRQ end)
-00AD81  1               
-00AD81  1               ; EhBASIC NMI support
-00AD81  1               
-00AD81  1               NMI
-00AD81  1  40           		RTI
-00AD82  1               
-00AD82  1               ; END_CODE
-00AD82  1               
-00AD82  1               ; LAB_mess
-00AD82  1               ; 	.byte	$0D,$0A,"6502 EhBASIC",$0D,$0A, "[C]old/[W]arm?",$00
-00AD82  1               ; 					; sign on string
-00AD82  1               
-00AD82  1               WELCOME_mess
-00AD82  1  20 57 65 6C  	.byte	" Welcome:  6502 ",$00
-00AD86  1  63 6F 6D 65  
-00AD8A  1  3A 20 20 36  
-00AD93  1               					; Welcome string
-00AD93  1               
-00AD93  1               BASIC_mess
-00AD93  1  20 45 68 42  	.byte	" EhBASIC  v2.22 ",$00
-00AD97  1  41 53 49 43  
-00AD9B  1  20 20 76 32  
-00ADA4  1               					; EhBASIC v string
-00ADA4  1               
-00ADA4  1               ; system vectors
-00ADA4  1               
-00ADA4  1                       ; .res    $FFFA-*
-00ADA4  1               .segment "VECTORS"
-00ADA4  1  81 AD        	.word	NMI		; NMI vector
-00ADA6  1  28 AD        	.word	RES_vec		; RESET vector
-00ADA8  1  6E AD        	.word	IRQ		; IRQ vector
-00ADA8  1               
+00AD35  1  20 00 AD     	jsr		io_init
+00AD38  1  20 37 A9     	jsr		kb_init
+00AD3B  1  58           	cli
+00AD3C  1               
+00AD3C  1  A2 00        	ldx		#0
+00AD3E  1               PrintWelcome
+00AD3E  1  BD 85 AD     	lda		WELCOME_mess,x
+00AD41  1  F0 07        	beq		print_next
+00AD43  1  20 CF A8     	jsr		lcd_print_char
+00AD46  1  E8           	inx
+00AD47  1  4C 3E AD     	jmp		PrintWelcome
+00AD4A  1               print_next
+00AD4A  1  20 FB A8     	jsr		lcd_new_line
+00AD4D  1  A2 00        	ldx		#0
+00AD4F  1               PrintBASIC
+00AD4F  1  BD 96 AD     	lda		BASIC_mess,x
+00AD52  1  F0 07        	beq		PrintDone
+00AD54  1  20 CF A8     	jsr		lcd_print_char
+00AD57  1  E8           	inx
+00AD58  1  4C 4F AD     	jmp		PrintBASIC
+00AD5B  1               PrintDone
+00AD5B  1               
+00AD5B  1  4C 00 80     	jmp		ROM_START
+00AD5E  1               
+00AD5E  1               ; ; Set up vectors and interrupt code, copy them to page 2.
+00AD5E  1               
+00AD5E  1               ; 	LDY	#END_CODE-LAB_vec	; set index/count
+00AD5E  1               ; LAB_stlp
+00AD5E  1               ; 	LDA	LAB_vec-1,Y		; get byte from interrupt code
+00AD5E  1               ; 	STA	VEC_IN-1,Y		; save to RAM
+00AD5E  1               ; 	DEY				; decrement index/count
+00AD5E  1               ; 	BNE	LAB_stlp		; loop if more to do
+00AD5E  1               
+00AD5E  1               ; ; Now do the signon message, Y = $00 here
+00AD5E  1               
+00AD5E  1               ; LAB_signon
+00AD5E  1               ; 	LDA	LAB_mess,Y		; get byte from sign on message
+00AD5E  1               ; 	BEQ	LAB_nokey		; exit loop if done
+00AD5E  1               
+00AD5E  1               ; 	JSR	V_OUTP		        ; output character
+00AD5E  1               ; 	INY				; increment index
+00AD5E  1               ; 	BNE	LAB_signon		; loop, branch always
+00AD5E  1               
+00AD5E  1               ; LAB_nokey
+00AD5E  1               ; 	JSR	V_INPT                  ; call scan input device
+00AD5E  1               ; 	BCC	LAB_nokey		; loop if no key
+00AD5E  1               
+00AD5E  1               ; 	AND	#$DF			; mask xx0x xxxx, ensure upper case
+00AD5E  1               
+00AD5E  1               ; 	CMP	#'W'			; compare with [W]arm start
+00AD5E  1               ; 	BEQ	LAB_dowarm		; branch if [W]arm start
+00AD5E  1               
+00AD5E  1               ; 	CMP	#'C'			; compare with [C]old start
+00AD5E  1               ; 	BNE	RES_vec		        ; loop if not [C]old start
+00AD5E  1               
+00AD5E  1               ; 	JMP	LAB_COLD		; do EhBASIC cold start
+00AD5E  1               
+00AD5E  1               ; LAB_dowarm
+00AD5E  1               ; 	JMP	LAB_WARM		; do EhBASIC warm start
+00AD5E  1               
+00AD5E  1               ; Byte out to serial console
+00AD5E  1               
+00AD5E  1               CHROUT
+00AD5E  1  20 A4 A7     	jsr acia_write
+00AD61  1  60           	rts
+00AD62  1               
+00AD62  1               ; Byte in from serial console or keyboard
+00AD62  1               
+00AD62  1               CHRIN_NW
+00AD62  1               	; jsr acia_read
+00AD62  1               	; rts
+00AD62  1  A5 E3        	lda in_cnt
+00AD64  1               	; jsr buf_read
+00AD64  1  C9 60        	cmp #$60				; if it is over 96
+00AD66  1  B0 03        	bcs buf_full			; leave the sending end turned off
+00AD68  1  20 9E A7     	jsr acia_resume_rx
+00AD6B  1               buf_full:
+00AD6B  1  20 15 AD     	jsr buf_read
+00AD6E  1  60           	rts
+00AD6F  1               
+00AD6F  1               
+00AD6F  1               ; 	jsr buf_dif				; get bytes to read
+00AD6F  1               ; 	beq NoDataIn			; If 0 branch to NoDataIn
+00AD6F  1               ; 	ldx in_rptr				; load the read pointer into X
+00AD6F  1               ; 	lda in_buffer,x			; and read the byte from the buffer
+00AD6F  1               ; 	pha						; them save it to the stack
+00AD6F  1               ; 	inc in_rptr				; increment the read pointer
+00AD6F  1               ; 	jsr buf_dif				; get bytes to read still
+00AD6F  1               ; 	cmp #$E0				; if it is over 224
+00AD6F  1               ; 	bcs buf_full			; leave the sending end turned off
+00AD6F  1               ; 	jsr acia_resume_rx		; otherwise set RTSB low to request RX
+00AD6F  1               ; buf_full:
+00AD6F  1               ; 	pla						; pull the byte from the stack
+00AD6F  1               ; 	sec						; Set carry if byte received
+00AD6F  1               ; 	rts
+00AD6F  1               ; NoDataIn:
+00AD6F  1               ; 	clc		                ; Carry clear no byte received pressed
+00AD6F  1               ; 	rts
+00AD6F  1               
+00AD6F  1               
+00AD6F  1               ; LOAD - currently does nothing.
+00AD6F  1               LOAD				        ; load vector for EhBASIC
+00AD6F  1  60           	RTS
+00AD70  1               
+00AD70  1               ; SAVE - currently does nothing.
+00AD70  1               SAVE				        ; save vector for EhBASIC
+00AD70  1  60           	RTS
+00AD71  1               
+00AD71  1               ; vector tables
+00AD71  1               
+00AD71  1               ; LAB_vec
+00AD71  1               ; 	.word	KBDin                   ; byte in from keyboard
+00AD71  1               ; 	.word	SCRNout		        ; byte out to screen
+00AD71  1               ; 	.word	SBCload		        ; load vector for EhBASIC
+00AD71  1               ; 	.word	SBCsave		        ; save vector for EhBASIC
+00AD71  1               
+00AD71  1               ; EhBASIC IRQ support
+00AD71  1               
+00AD71  1               IRQ
+00AD71  1  48           	pha				; save A
+00AD72  1  AD 21 02         lda		ACIA_STATUS             ; Check if ACIA wants service
+00AD75  1  10 03            bpl		no_acia_int                ; bit 7 not set, so no
+00AD77  1  20 C4 A7         jsr		acia_handle          ; service ACIA
+00AD7A  1               no_acia_int
+00AD7A  1  AD 0D 02     	lda		VIA1_IFR
+00AD7D  1  10 03        	bpl		no_via1_int
+00AD7F  1  20 3C A9     	jsr		kb_handle
+00AD82  1               no_via1_int
+00AD82  1  68           	PLA				; restore A
+00AD83  1  40           	RTI
+00AD84  1               irq_handle:
+00AD84  1               
+00AD84  1               ; IRQ_VECTOR   ;This is the ROM start for the BRK/IRQ handler
+00AD84  1               ; 		PHA   ;Save A Reg (3)
+00AD84  1               ; 		PHX   ;Save X Reg (3)
+00AD84  1               ; 		PHY   ;Save Y Reg (3)
+00AD84  1               ; 		TSX   ;Get Stack pointer (2)
+00AD84  1               ; 		LDA   $0100+4,X   ;Get Status Register (4)
+00AD84  1               ; 		AND   #$10   ;Mask for BRK bit set (2)
+00AD84  1               ; 		BEQ   DO_IRQ   ;If not set, handle IRQ (2/3)
+00AD84  1               ; 		JMP   (BRKVEC)   ;Jump to Soft vectored BRK Handler (5) (24 clock cycles to vector routine)
+00AD84  1               ; DO_IRQ
+00AD84  1               ; 		JMP   (IRQVEC)   ;Jump to Soft vectored IRQ Handler (5) (25 clock cycles to vector routine)
+00AD84  1               ; ;
+00AD84  1               ; IRQ_EXIT      ;This is the standard return for the IRQ/BRK handler routines
+00AD84  1               ; 		PLY   ;Restore Y Reg (4)
+00AD84  1               ; 		PLX   ;Restore X Reg (4)
+00AD84  1               ; 		PLA   ;Restore A Reg (4)
+00AD84  1               ; 		RTI   ;Return from IRQ/BRK routine (6) (18 clock cycles from vector jump to IRQ end)
+00AD84  1               
+00AD84  1               ; EhBASIC NMI support
+00AD84  1               
+00AD84  1               NMI
+00AD84  1  40           		RTI
+00AD85  1               
+00AD85  1               ; END_CODE
+00AD85  1               
+00AD85  1               ; LAB_mess
+00AD85  1               ; 	.byte	$0D,$0A,"6502 EhBASIC",$0D,$0A, "[C]old/[W]arm?",$00
+00AD85  1               ; 					; sign on string
+00AD85  1               
+00AD85  1               WELCOME_mess
+00AD85  1  20 57 65 6C  	.byte	" Welcome:  6502 ",$00
+00AD89  1  63 6F 6D 65  
+00AD8D  1  3A 20 20 36  
+00AD96  1               					; Welcome string
+00AD96  1               
+00AD96  1               BASIC_mess
+00AD96  1  20 45 68 42  	.byte	" EhBASIC  v2.22 ",$00
+00AD9A  1  41 53 49 43  
+00AD9E  1  20 20 76 32  
+00ADA7  1               					; EhBASIC v string
+00ADA7  1               
+00ADA7  1               ; system vectors
+00ADA7  1               
+00ADA7  1                       ; .res    $FFFA-*
+00ADA7  1               .segment "VECTORS"
+00ADA7  1  84 AD        	.word	NMI		; NMI vector
+00ADA9  1  28 AD        	.word	RES_vec		; RESET vector
+00ADAB  1  71 AD        	.word	IRQ		; IRQ vector
+00ADAB  1               

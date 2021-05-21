@@ -66,8 +66,8 @@ acia_init:
 	lda		#(ACIA_1_SBN | ACIA_WL_8 | ACIA_RX_CLK_B_RATE | ACIA_BAUD_115200)
 	sta		ACIA_CONTROL
 
-	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_NO_IRQ | ACIA_DTR)
-	; lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_IRQ | ACIA_DTR)
+	; lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_NO_IRQ | ACIA_DTR)
+	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_L | ACIA_RX_IRQ | ACIA_DTR)
 	sta		ACIA_COMMAND
 	pla
 	rts
@@ -116,7 +116,7 @@ acia_handle:
 	jsr		buf_write		; and store it in the buffer.
 
 	lda		in_cnt			; Now see how full the buffer is.
-	cmp		#$F0			; If it has less than 240 bytes unread,
+	cmp		#$70			; If it has less than 12 bytes unread,
 	bcc		@end			; just exit the ISR here.
 
 	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_H | ACIA_RX_IRQ | ACIA_DTR)	; Else, tell the other end to stop sending data before
