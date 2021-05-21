@@ -265,37 +265,21 @@ NmiBase		= $DC		; NMI handler enabled/setup/triggered flags
 IrqBase		= $DF		; IRQ handler enabled/setup/triggered flags
 ;			= $E0		; IRQ handler addr low byte
 ;			= $E1		; IRQ handler addr high byte
-r0 = $E8 ; 2 bytes
-r0L = $E8 ; low byte
-r0H = $E9 ; high byte
-r1 = $EA ; 2 bytes
-r1L = $EA ; low byte
-r1H = $EB ; high byte
-r2 = $EC ; 2 bytes
-r2L = $EC ; low byte
-r2H = $ED ; high byte
-lcd_addr = $E2 ; 1 byte, lcd busy flag and address
-kb_wptr = $E3 ; 1 byte
-kb_rptr = $E4 ; 1 byte
-kb_flags = $E5 ; 1 byte
-kb_modifiers = $E6 ; 1 byte
-
-;			= $DE		; unused
-;			= $DF		; unused
-;			= $E0		; unused
-;			= $E1		; unused
-;			= $E2		; unused
-;			= $E3		; unused
-;			= $E4		; unused
-;			= $E5		; unused
-;			= $E6		; unused
+lcd_addr		= $E2	; 1 byte, lcd busy flag and address
+in_wptr			= $E3	; 1 byte
+in_rptr			= $E4	; 1 byte
+kb_flags		= $E5	; 1 byte
+kb_modifiers 	= $E6	; 1 byte
+r0				= $E8	; 2 bytes
+r0L				= $E8	; low byte
+r0H				= $E9	; high byte
+r1				= $EA	; 2 bytes
+r1L				= $EA	; low byte
+r1H				= $EB	; high byte
+r2				= $EC	; 2 bytes
+r2L				= $EC	; low byte
+r2H				= $ED	; high byte
 ;			= $E7		; unused
-;			= $E8		; unused
-;			= $E9		; unused
-;			= $EA		; unused
-;			= $EB		; unused
-;			= $EC		; unused
-;			= $ED		; unused
 ;			= $EE		; unused
 
 Decss			= $EF		; number to decimal string start
@@ -450,7 +434,7 @@ Ibuffs		= IRQ_vec+$14
 					; start of input buffer after IRQ/NMI code
 Ibuffe		= Ibuffs+$47; end of input buffer
 
-Ram_base		= $0500	; start of user RAM (set as needed, should be page aligned)
+Ram_base		= $0600	; start of user RAM (set as needed, should be page aligned)
 Ram_top		= $8000	; end of user RAM+1 (set as needed, should be page aligned)
 
 ; This start can be changed to suit your system

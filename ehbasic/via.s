@@ -61,3 +61,10 @@ via_init:
   stz VIA1_PORTB
   pla
   rts
+
+
+; CNT_ISR: BIT   VIA_T1CL ; Turn off interrupt early.  (More on that below.)
+;          INC   CNT      ; Increment the low byte of the variable.
+;          BNE   isr1$    ; Branch to end if the low byte didn't roll over to 00.
+;          INC   CNT+1    ; Otherwise increment high byte of variable.
+;  isr1$:  RTI            ; Exit the ISR, restoring the previous processor status.

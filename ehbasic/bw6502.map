@@ -1,7 +1,7 @@
 Modules list:
 -------------
 bw6502.o:
-    CODE              Offs=000000  Size=002DD6  Align=00100  Fill=0000
+    CODE              Offs=000000  Size=002972  Align=00001  Fill=0000
     RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
     BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
     DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
@@ -15,11 +15,11 @@ Segment list:
 Name                   Start     End    Size  Align
 ----------------------------------------------------
 ZEROPAGE              000000  000000  000000  00001
-CODE                  008000  00ADD5  002DD6  00100
+CODE                  008000  00A971  002972  00001
 NULL                  008000  008000  000000  00001
-BSS                   00ADD6  00ADD6  000000  00001
-DATA                  00ADD6  00ADD6  000000  00001
-RODATA                00ADD6  00ADD6  000000  00001
+BSS                   00A972  00A972  000000  00001
+DATA                  00A972  00A972  000000  00001
+RODATA                00A972  00A972  000000  00001
 VECTORS               00FFFA  00FFFF  000006  00001
 
 
