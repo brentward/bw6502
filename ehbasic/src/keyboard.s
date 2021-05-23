@@ -11,6 +11,7 @@ R_CTRL      = %00100000
 L_GUI       = %01000000
 R_GUI       = %10000000
 
+.segment "BIOS"
 kb_init:
   stz kb_flags
   stz kb_modifiers
@@ -104,6 +105,16 @@ push_key:
   ; ldx in_wptr
   ; sta in_buffer,x
   ; inc in_wptr
+  pha
+  jsr buf_dif
+  cmp		#$80        	; If it has less than 128 bytes unread,
+	bcc		@push			; write to buffer.
+	lda		#$07			; Ring bell
+	jsr		buf_write
+  pla
+  jmp kb_handle_return
+@push:
+  pla
   jsr buf_write
   jmp kb_handle_return
 

@@ -48,6 +48,9 @@ VIA_CA2_HIGH_OUT = %00001110
 VIA_CA1_INT_LOW = %00000000
 VIA_CA1_INT_HIGH = %0000001
 
+.segment "BIOS"
+
+
 via_init:
   pha
   lda #VIA_INT_SET | VIA_INT_CA1

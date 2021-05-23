@@ -1,3 +1,5 @@
+.segment "BIOS"
+
 wait_ms:
   sta r0
   phx

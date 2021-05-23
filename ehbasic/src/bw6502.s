@@ -1,15 +1,19 @@
 
 ; Minimal monitor for my 6502 Single Board Computer.
 .setcpu "65C02"
-.code
-	
+	.include "zeropage.s"
+
+.segment "BIOS"
+
 	.include "basic22p5.s"
 	.include "acia.s"
 	.include "via.s"
 	.include "lcd.s"
 	.include "utils.s"
 	.include "keyboard.s"
-	.include "serialio.s"
+	.include "io.s"
+
+.segment "BIOS"
 
 ; ; Defines
 ; lcd_addr		= $E2	; 1 byte, lcd busy flag and address
@@ -117,9 +121,11 @@ CHROUT
 CHRIN_NW
 	; jsr acia_read
 	; rts
-	lda in_cnt
+	; lda in_cnt
+	jsr buf_dif
 	; jsr buf_read
-	cmp #$60				; if it is over 96
+	; cmp #$60				; if it is over 96
+	cmp #$E0        		; Is it at least 224?
 	bcs buf_full			; leave the sending end turned off
 	jsr acia_resume_rx
 buf_full:

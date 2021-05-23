@@ -32,6 +32,8 @@ RS = %00100000
 
 string_ptr = r0
 
+.segment "BIOS"
+
 lcd_init:
   pha
   lda #120

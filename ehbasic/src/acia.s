@@ -115,8 +115,10 @@ acia_handle:
 	lda		ACIA_DATA		; Get the data from the ACIA
 	jsr		buf_write		; and store it in the buffer.
 
-	lda		in_cnt			; Now see how full the buffer is.
-	cmp		#$70			; If it has less than 12 bytes unread,
+	; lda		in_cnt			; Now see how full the buffer is.
+	jsr		buf_dif
+	; cmp		#$70			; If it has less than 12 bytes unread,
+	cmp		#$F0        	; If it has less than 240 bytes unread,
 	bcc		@end			; just exit the ISR here.
 
 	lda		#(ACIA_NO_PARITY | ACIA_NO_ECHO | ACIA_RTSB_H | ACIA_RX_IRQ | ACIA_DTR)	; Else, tell the other end to stop sending data before
