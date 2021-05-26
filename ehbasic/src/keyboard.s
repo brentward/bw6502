@@ -27,7 +27,6 @@ kb_handle:
   lda kb_flags
   and #RELEASE
   beq read_key
-
   lda kb_flags
   eor #RELEASE
   sta kb_flags
@@ -36,18 +35,29 @@ kb_handle:
   beq l_shfit_up
   cmp #$59
   beq r_shfit_up
+  cmp #$14
+  beq l_ctrl_up
   jmp kb_handle_return
 
-read_byte_extended
+read_byte_extended:
+  lda VIA1_PORTA
+  cmp #$F0
+  bne not_extended_key_release
+  jmp key_released
+not_extended_key_release:
   lda kb_flags
   eor #EXTENDED
   sta kb_flags
   and #RELEASE
-  beq read_key_extended
+  bne not_key_extended
+  jmp read_key_extended
+not_key_extended:
   lda kb_flags
   eor #RELEASE
   sta kb_flags
   lda VIA1_PORTA
+  cmp #$14
+  beq r_ctrl_up
   jmp kb_handle_return
 
 l_shfit_up:
@@ -60,19 +70,49 @@ r_shfit_up:
   eor #R_SHIFT
   sta kb_modifiers
   jmp kb_handle_return
+l_ctrl_up:
+  lda kb_modifiers
+  eor #L_CTRL
+  sta kb_modifiers
+  jmp kb_handle_return
+r_ctrl_up:
+  lda kb_modifiers
+  eor #R_CTRL
+  sta kb_modifiers
+  jmp kb_handle_return
+
 
 read_key:
   lda VIA1_PORTA
   cmp #$F0
-  beq key_released
+  bne not_key_released
+  jmp key_released
+not_key_released:
   cmp #$E0
-  beq extended
+  bne not_extended
+  jmp extended
+not_extended
+  cmp #$83 ;F7 is the only key above $7F so we can cut keymaps in half if we ignore this
+  bne not_f7
+  jmp kb_handle_return
+not_f7:
   cmp #$12
-  beq l_shift_down
+  bne not_l_shift_down
+  jmp l_shift_down
+not_l_shift_down:
   cmp #$59
-  beq r_shift_down
+  bne not_r_shift_down
+  jmp r_shift_down
+not_r_shift_down:
   cmp #$58
-  beq caps_lock_down
+  bne not_caps_lock_down
+  jmp caps_lock_down
+not_caps_lock_down:
+  cmp #$14
+  bne not_l_ctrl_down
+  jmp l_ctrl_down
+not_l_ctrl_down:
+
   ; cmp #$76
   ; beq esc_down
   ; cmp #$66
@@ -87,10 +127,17 @@ read_key:
   lda kb_modifiers
   and #R_SHIFT
   bne shifted_key
+  lda kb_modifiers
+  and #L_CTRL
+  bne ctrl_key
+  lda kb_modifiers
+  and #R_CTRL
+  bne ctrl_key
   lda kb_flags
   and #CAPS_LOCK
-  bne caps_lock_key
-
+  beq normal_key 
+  jmp caps_lock_key
+normal_key:
   lda keymap,x
   jmp push_key
 
@@ -100,6 +147,38 @@ char_is_a_to_z
 
 shifted_key:
   lda keymap_shifted,x
+  jmp push_key
+
+ctrl_key:
+  ; lda keymap_ctrl,x
+
+;   lda keymap_shifted,x
+;   sbc #$40
+;   bne ignore_ctrl_key
+;   jmp push_key
+; ignore_ctrl_key
+;   jmp kb_handle_return
+  lda keymap_shifted,x
+  tax
+  clc
+  adc #($FF - '_')
+  adc #('_' - '@' + 1)
+  txa
+  bcc check_exta_ctrl
+  sbc #$40
+  jmp push_key
+check_exta_ctrl:
+  tax
+  clc
+  adc #($FF - '}')
+  adc #('}' - '[' + 1)
+  txa
+  bcc ignore_ctrl_key
+  sbc #$60
+  jmp push_key
+ignore_ctrl_key:
+  jmp kb_handle_return
+
 
 push_key:
   ; ldx in_wptr
@@ -126,14 +205,14 @@ key_released:
 
 read_key_extended:
   lda VIA1_PORTA
-  cmp #$F0
-  beq key_released
   cmp #$6B
   beq left_down
   cmp #$74
   beq right_down
   cmp #$71
   beq del_down
+  cmp #$14
+  beq r_ctrl_down
   jmp kb_handle_return
 
 extended:
@@ -160,6 +239,11 @@ caps_lock_down:
   sta kb_flags
   jmp kb_handle_return
   
+l_ctrl_down:
+  lda kb_modifiers
+  ora #L_CTRL
+  sta kb_modifiers
+  jmp kb_handle_return
 ; esc_down:
 ;   jsr lcd_clear
 ;   jmp kb_handle_return
@@ -192,8 +276,9 @@ caps_lock_key:
   adc #($FF - 'z')
   adc #('z' - 'a' + 1)
   txa
-  bcs char_is_a_to_z
-  jmp push_key
+  bcc push_key
+  jmp char_is_a_to_z
+  ; jmp push_key
 
 left_down:
   jsr lcd_screen_right
@@ -206,12 +291,19 @@ right_down:
 del_down:
   lda #$7F
   jmp push_key
+  jmp kb_handle_return
+
+
+r_ctrl_down:
+  lda kb_modifiers
+  ora #R_CTRL
+  sta kb_modifiers
 
 kb_handle_return:
   plx
   rts
 
-.align 256
+.align 128
 keymap:
   ;      0123456789ABCDEF
   .byte "?????????????"
@@ -230,14 +322,14 @@ keymap:
   .byte "0.2568"
   .byte $1B ; 76 ESC
   .byte        "??+3-*9??" ; 7
-  .byte "????????????????" ; 8
-  .byte "????????????????" ; 9
-  .byte "????????????????" ; A
-  .byte "????????????????" ; B
-  .byte "????????????????" ; C
-  .byte "????????????????" ; D
-  .byte "????????????????" ; E
-  .byte "????????????????" ; F
+  ; .byte "????????????????" ; 8
+  ; .byte "????????????????" ; 9
+  ; .byte "????????????????" ; A
+  ; .byte "????????????????" ; B
+  ; .byte "????????????????" ; C
+  ; .byte "????????????????" ; D
+  ; .byte "????????????????" ; E
+  ; .byte "????????????????" ; F
 keymap_shifted:
   ;      0123456789ABCDEF
   .byte "?????????????"
@@ -258,11 +350,44 @@ keymap_shifted:
   .byte "0.2568"
   .byte $1B ; 76 ESC
   .byte        "??+3-*9??" ; 7
-  .byte "????????????????" ; 8
-  .byte "????????????????" ; 9
-  .byte "????????????????" ; A
-  .byte "????????????????" ; B
-  .byte "????????????????" ; C
-  .byte "????????????????" ; D
-  .byte "????????????????" ; E
-  .byte "????????????????" ; F
+  ; .byte "????????????????" ; 8
+  ; .byte "????????????????" ; 9
+  ; .byte "????????????????" ; A
+  ; .byte "????????????????" ; B
+  ; .byte "????????????????" ; C
+  ; .byte "????????????????" ; D
+  ; .byte "????????????????" ; E
+  ; .byte "????????????????" ; F
+; keymap_ctrl:
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; 0
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$3F,$3F,$3F,$11,$3F,$3F,$3F,$3F,$1A,$13,$01,$17,$00,$3F ; 1
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$03,$18,$04,$05,$3F,$3F,$3F,$3F,$3F,$16,$06,$14,$12,$3F,$3F ; 2
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$0E,$02,$08,$07,$19,$1E,$3F,$3F,$3F,$0D,$0A,$15,$3F,$3F,$3F ; 3
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$0B,$09,$0F,$3F,$3F,$3F,$3F,$3F,$3F,$0C,$3F,$10,$1F,$3F ; 4
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$3F,$3F,$1B,$3F,$3F,$3F,$3F,$3F,$3F,$1D,$3F,$1C,$3F,$3F ; 5
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; 6
+;         ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+;   .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; 7
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; 8
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; 9
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; A
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; B
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; C
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; D
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; E
+  ;       ; 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+  ; .byte $3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F,$3F ; F
