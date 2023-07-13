@@ -32,24 +32,26 @@ RS = %00100000
 
 string_ptr = r0
 
+.segment "BIOS"
+
 lcd_init:
   pha
-  lda #50
+  lda #120
   jsr wait_ms
   lda #%00000011 ; Sets to 8-bit mode; 1-line display; 5x8 font
-  jsr lcd_instruction.send_command
-  lda #5
+  jsr lcd_instruction_send_command
+  lda #33
   jsr wait_ms
   lda #%00000011 ; Sets to 8-bit mode; 1-line display; 5x8 font
-  jsr lcd_instruction.send_command
+  jsr lcd_instruction_send_command
   lda #1
   jsr wait_ms
   lda #%00000011 ; Sets to 8-bit mode; 1-line display; 5x8 font
-  jsr lcd_instruction.send_command
+  jsr lcd_instruction_send_command
   lda #1
   jsr wait_ms
   lda #%00000010 ; Sets to 4-bit mode
-  jsr lcd_instruction.send_command
+  jsr lcd_instruction_send_command
   lda #(FUNCTION_SET | FUNCTION_2_LINE) ; Sets to 4-bit mode; 2-line display; 5x8 font
   jsr lcd_instruction
   lda #(ENTRY_MODE_SET | ENTRY_MODE_INCREMENT) ; Entry mode set; increment and shift cursor; no scroll 
@@ -63,7 +65,7 @@ lcd_init:
 
 lcd_instruction:
   jsr lcd_wait
-.send_command:
+lcd_instruction_send_command:
   pha
   lsr            ; shift high nibble to low 4 bits
   lsr
@@ -88,7 +90,7 @@ lcd_wait:
   pha
   lda #%11110000 ; Port B D0-D3 are input
   sta VIA1_DDRB
-.loop:
+lcd_wait_loop:
   lda #RW ; Set RW and pulse E to read LCD address
   sta VIA1_PORTB
   lda #(RW | E)
@@ -108,7 +110,7 @@ lcd_wait:
   ora lcd_addr ; Combine bits read with high bits and store complete address with busy flag
   sta lcd_addr
   and #%10000000 ; Check busy flag
-  bne .loop
+  bne lcd_wait_loop
 
   lda #RW
   sta VIA1_PORTB
@@ -183,45 +185,55 @@ lcd_print_char:
   pla
   rts
 
-
-lcd_print_screen_buf
-  ldx #0
-.loop:
-  lda screen_buf,x
-  beq .return
-  jsr lcd_print_char
-  inx
-  jmp .loop
-.return
+lcd_new_line:
+  pha
+  lda lcd_addr
+  adc #$40
+  and #$40
+  jsr lcd_set_ddram_addr
+  pla
   rts
+
+
+
+; lcd_print_screen_buf
+;   ldx #0
+; lcd_print_screen_buf_loop:
+;   lda screen_buf,x
+;   beq lcd_print_screen_buf_return
+;   jsr lcd_print_char
+;   inx
+;   jmp lcd_print_screen_buf_loop
+; lcd_print_screen_buf_return
+;   rts
 
 ; print null terminated string located at address contained in s0
 ; input r0
-lcd_print
+lcd_print:
   ldy #0
-.loop
+lcd_print_loop:
   lda (string_ptr),y
-  beq .return
+  beq lcd_print_return
   jsr lcd_print_char
   iny
-  jmp loop
-.return
+  jmp lcd_print_loop
+lcd_print_return:
   rts
 
-push_char_screen_buf:
-  pha
-  ldx #0
+; push_char_screen_buf:
+;   pha
+;   ldx #0
 
-.char_loop
-  lda screen_buf,x
-  beq .add_char
-  inx
-  jmp .char_loop
+; push_char_screen_buf_char_loop:
+;   lda screen_buf,x
+;   beq push_char_screen_buf_add_char
+;   inx
+;   jmp push_char_screen_buf_char_loop
 
-.add_char
-  pla
-  sta screen_buf,x
-  inx
-  stz screen_buf,x
-  rts
+; push_char_screen_buf_add_char:
+;   pla
+;   sta screen_buf,x
+;   inx
+;   stz screen_buf,x
+;   rts
 

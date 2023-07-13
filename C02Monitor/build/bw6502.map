@@ -1,0 +1,75 @@
+Modules list:
+-------------
+bw6502.o:
+    CODE              Offs=000000  Size=000000  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+    BASIC             Offs=000000  Size=002722  Align=00001  Fill=0000
+    BIOS              Offs=000000  Size=0001EB  Align=00001  Fill=0000
+    TOP               Offs=000000  Size=0000F9  Align=00001  Fill=0000
+    VECTORS           Offs=000000  Size=000006  Align=00001  Fill=0000
+    MONITOR           Offs=000000  Size=00108D  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+ZEROPAGE              000000  000000  000000  00001
+BSS                   008000  008000  000000  00001
+CODE                  008000  008000  000000  00001
+DATA                  008000  008000  000000  00001
+NULL                  008000  008000  000000  00001
+RODATA                008000  008000  000000  00001
+BASIC                 00B000  00D721  002722  00001
+MONITOR               00E000  00F08C  00108D  00001
+BIOS                  00F800  00F9EA  0001EB  00001
+TOP                   00FF00  00FFF8  0000F9  00001
+VECTORS               00FFFA  00FFFF  000006  00001
+
+
+Exports list by name:
+---------------------
+__BASIC_LOAD__            00B000  LA    __BASIC_RUN__             00B000  LA    
+__BASIC_SIZE__            002722  EA    __BIOS_LOAD__             00F800  LA    
+__BIOS_RUN__              00F800  LA    __BIOS_SIZE__             0001EB  EA    
+__MONITOR_LOAD__          00E000  LA    __MONITOR_RUN__           00E000  LA    
+__MONITOR_SIZE__          00108D  EA    __TOP_LOAD__              00FF00  LA    
+__TOP_RUN__               00FF00  LA    __TOP_SIZE__              0000F9  EA    
+__VECTORS_LOAD__          00FFFA  LA    __VECTORS_RUN__           00FFFA  LA    
+__VECTORS_SIZE__          000006  EA    
+
+
+Exports list by value:
+----------------------
+__VECTORS_SIZE__          000006  EA    __TOP_SIZE__              0000F9  EA    
+__BIOS_SIZE__             0001EB  EA    __MONITOR_SIZE__          00108D  EA    
+__BASIC_SIZE__            002722  EA    __BASIC_LOAD__            00B000  LA    
+__BASIC_RUN__             00B000  LA    __MONITOR_RUN__           00E000  LA    
+__MONITOR_LOAD__          00E000  LA    __BIOS_LOAD__             00F800  LA    
+__BIOS_RUN__              00F800  LA    __TOP_LOAD__              00FF00  LA    
+__TOP_RUN__               00FF00  LA    __VECTORS_LOAD__          00FFFA  LA    
+__VECTORS_RUN__           00FFFA  LA    
+
+
+Imports list:
+-------------
+__BASIC_LOAD__ ([linker generated]):
+__BASIC_RUN__ ([linker generated]):
+__BASIC_SIZE__ ([linker generated]):
+__BIOS_LOAD__ ([linker generated]):
+__BIOS_RUN__ ([linker generated]):
+__BIOS_SIZE__ ([linker generated]):
+__MONITOR_LOAD__ ([linker generated]):
+__MONITOR_RUN__ ([linker generated]):
+__MONITOR_SIZE__ ([linker generated]):
+__TOP_LOAD__ ([linker generated]):
+__TOP_RUN__ ([linker generated]):
+__TOP_SIZE__ ([linker generated]):
+__VECTORS_LOAD__ ([linker generated]):
+__VECTORS_RUN__ ([linker generated]):
+__VECTORS_SIZE__ ([linker generated]):
+
